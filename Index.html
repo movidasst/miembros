@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Integrantes - Movida SST</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .card { background-color: white; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.1); border: 1px solid #e2e8f0; }
+        .spinner { border-radius: 50%; animation: spin 1s linear infinite; border: 4px solid rgba(255,255,255,0.3); border-top-color: #fff; width: 24px; height: 24px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .spinner-center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .view { transition: opacity 0.4s ease-in-out, visibility 0.4s; }
+        .hidden-view { opacity: 0; visibility: hidden; position: absolute; pointer-events: none; }
+
+        .custom-input { background-color: #f8fafc; border: 1px solid #cbd5e1; transition: all 0.2s ease-in-out; }
+        .custom-input:focus { border-color: #14b8a6; background-color: white; box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.2); }
+        
+        #cropper-modal { display: none; }
+        #cropper-container img { max-width: 100%; }
+        #member-photo { object-fit: cover; width: 7rem; height: 7rem; }
+        .seal-credential { position: absolute; width: 80px; height: 80px; bottom: 0.75rem; right: 0.75rem; opacity: 0.1; pointer-events: none; }
+    </style>
+</head>
+<body class="text-slate-800 flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-md lg:max-w-5xl mx-auto">
+        <div class="card p-8 lg:p-12 relative">
+            
+            <section id="main-view" class="view">
+                <header class="text-center mb-8 lg:mb-12">
+                    <img src="https://assets.poap.xyz/74cdc955-1104-48ef-ad81-22f71680e80f.png" alt="Logo Movida SST" class="mx-auto h-24 w-auto mb-6" crossorigin="anonymous">
+                    <h1 class="text-2xl lg:text-3xl font-bold text-slate-900">Portal Movida › PROFESIONALES</h1>
+                    <p class="text-sm text-slate-500 mt-1">Credencial y Verificación Digital</p>
+                </header>
+
+                <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-start">
+                    
+                    <!-- Columna Izquierda: Acceso y Herramientas -->
+                    <div class="space-y-8">
+                        <div class="p-6 bg-slate-50 rounded-xl border border-slate-200">
+                            <h2 class="text-lg font-bold text-slate-800 text-center mb-1">Acceso a Credencial</h2>
+                            <p class="text-center text-sm text-slate-500 mb-4">Ingresa tus datos para ver tu credencial.</p>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="member-dni" class="block text-sm font-medium text-slate-700">Cédula o DNI</label>
+                                    <input type="text" id="member-dni" placeholder="Ej: 12345678" class="custom-input mt-1 w-full p-3 rounded-lg" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                </div>
+                                <div>
+                                    <label for="member-code" class="block text-sm font-medium text-slate-700">Clave de Registro</label>
+                                    <input type="text" id="member-code" placeholder="Ej: MOVSST-XXXX" class="custom-input mt-1 w-full p-3 rounded-lg">
+                                </div>
+                            </div>
+                            <button id="search-button" class="mt-6 w-full bg-teal-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-teal-700 transition-all duration-100 active:scale-95 shadow-md flex items-center justify-center gap-2 disabled:opacity-70 relative">
+                                <span id="search-button-text" class="btn-text transition-opacity">Consultar Mis Datos</span>
+                            </button>
+                            <p id="error-message" class="text-rose-600 text-center text-sm mt-4 font-medium h-4" aria-live="polite"></p>
+                        </div>
+
+                        <div class="pt-6 border-t border-slate-200">
+                            <h2 class="text-lg font-bold text-slate-800 text-center mb-4">Recursos para Profesionales</h2>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <a href="https://forms.gle/dwFGVyxxzcsyL2GJ7" target="_blank" class="w-full bg-slate-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-slate-700 transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"></path>
+                                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"></path>
+                                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"></path>
+                                    </svg>
+                                    <span>Registrar Membresía</span>
+                                </a>
+                                <a href="https://www.linkedin.com/groups/12893335/" target="_blank" class="w-full bg-[#0077B5] text-white font-semibold py-3 px-4 rounded-lg hover:bg-[#005E92] transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-linkedin" viewBox="0 0 16 16">
+                                        <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
+                                    </svg>
+                                    <span>LinkedIn</span>
+                                </a>
+                                <a href="https://chat.whatsapp.com/DtQHMJqiLOmFOin4cHJODc" target="_blank" class="w-full bg-[#25D366] text-white font-semibold py-3 px-4 rounded-lg hover:bg-[#1DAA53] transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
+                                        <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.89 7.89 0 0 0 13.6 2.326zM7.994 14.521a6.57 6.57 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+                                    </svg>
+                                    <span>WhatsApp</span>
+                                </a>
+                                <a href="https://t.me/movidasst" target="_blank" class="w-full bg-[#2AABEE] text-white font-semibold py-3 px-4 rounded-lg hover:bg-[#1B98D4] transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telegram" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.287 5.906c.778.324 2.334.994 2.334.994l2.252-.315a.5.5 0 0 1 .62.314l-1.387 6.72a.5.5 0 0 1-.945.18l-2.635-2.25-1.577 1.577a.5.5 0 0 1-.858-.25l-1.428-5.01a.5.5 0 0 1 .18-.577l1.45-1.037.45-.324z"/>
+                                    </svg>
+                                    <span>Telegram</span>
+                                </a>
+                                <a href="https://poap.xyz/" target="_blank" class="w-full bg-indigo-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-indigo-700 transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M10.854 4.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 6.793l2.646-2.647a.5.5 0 0 1 .708 0z"></path>
+                                        <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.01a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"></path>
+                                    </svg>
+                                    <span>Crea tu POAP</span>
+                                </a>
+                                <a href="https://metamask.io/es/download" target="_blank" class="w-full bg-orange-500 text-white font-semibold py-3 px-4 rounded-lg hover:bg-orange-600 transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
+                                        <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5v-8A1.5 1.5 0 0 1 1.5 3H2V1.78a1.5 1.5 0 0 1 1.864-1.454l1.258.251a.5.5 0 0 1 .45.495v2.064A.5.5 0 0 1 5.5 3.5h5a.5.5 0 0 1 .478-.355V1.27a.5.5 0 0 1 .45-.495l1.258-.251zM1.5 4a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-13z"></path>
+                                    </svg>
+                                    <span>Crea tu Wallet</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Columna Derecha: Verificación -->
+                    <div class="mt-8 pt-6 border-t border-slate-200 lg:mt-0 lg:pt-0 lg:border-t-0">
+                         <h2 class="text-lg font-bold text-slate-800 text-center mb-1">Verificar un Integrante</h2>
+                         <p class="text-center text-sm text-slate-500 mb-4">Introduce el código de verificación.</p>
+                        <div>
+                            <label for="verification-code" class="sr-only">Código de Verificación</label>
+                            <input type="text" id="verification-code" placeholder="Ej: 3GPHQ" class="custom-input mt-1 w-full p-3 rounded-lg text-center tracking-widest font-mono uppercase">
+                        </div>
+                        <button id="verify-button" class="mt-4 w-full bg-slate-700 text-white font-semibold py-3 px-6 rounded-lg hover:bg-slate-800 transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70 relative">
+                            <span id="verify-button-text" class="btn-text transition-opacity">Verificar Código</span>
+                        </button>
+                        <div id="verification-result-message" class="text-center text-sm mt-4 font-medium" aria-live="polite"></div>
+                    </div>
+                </div>
+
+            </section>
+            
+            <section id="result-view" class="view hidden-view">
+               <div class="w-full max-w-md flex flex-col items-center">
+                   <h2 class="text-xl font-bold text-center mb-4">Credencial de Integrante</h2>
+                   
+                   <!-- Skeleton Loader -->
+                   <div id="skeleton-view" class="bg-white rounded-xl shadow-lg w-full border border-slate-200 animate-pulse">
+                        <div class="h-[76px] bg-slate-200 rounded-t-xl"></div>
+                        <div class="p-5 flex items-stretch space-x-5">
+                            <div class="flex-shrink-0">
+                                <div class="w-28 h-28 bg-slate-200 rounded-lg"></div>
+                            </div>
+                            <div class="flex-grow flex flex-col justify-center space-y-3">
+                                <div class="h-6 bg-slate-200 rounded w-3/4"></div>
+                                <div class="h-4 bg-slate-200 rounded w-1/2"></div>
+                                <div class="h-4 bg-slate-200 rounded w-1/3"></div>
+                                <div class="h-8 bg-slate-200 rounded w-1/4 mt-2"></div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-100 px-4 py-5 border-t border-slate-200"></div>
+                   </div>
+
+                   <!-- Actual Credential -->
+                   <div id="credential" class="bg-white rounded-xl shadow-lg overflow-hidden font-sans text-slate-800 w-full border border-slate-200 relative hidden">
+                       <img src="https://assets.poap.xyz/600dd07c-7b41-43f1-958e-39d5276b090e.png" alt="Sello de Verificación" class="seal-credential" crossorigin="anonymous">
+                       <div class="bg-gradient-to-r from-teal-600 to-teal-700 p-4 flex justify-between items-center border-b border-teal-800">
+                           <div>
+                               <h2 class="text-xl font-bold text-white">La Movida de SST</h2>
+                               <p class="text-xs text-teal-100 italic">De la reacción a la prevención</p>
+                           </div>
+                       </div>
+                       <div class="p-5 flex items-stretch space-x-5">
+                           <div class="flex flex-col items-center justify-start flex-shrink-0">
+                               <img id="member-photo" src="https://placehold.co/112x112/EFEFEF/3A3A3A?text=Perfil" class="rounded-lg border-2 border-slate-200" crossorigin="anonymous" onerror="this.onerror=null;this.src='https://placehold.co/112x112/EFEFEF/3A3A3A?text=Perfil';">
+                           </div>
+                           <div class="flex-grow flex flex-col justify-center">
+                               <h3 id="member-name" class="text-2xl font-bold leading-tight">Nombre Apellido</h3>
+                               <p class="text-sm font-semibold text-teal-700">Profesional de SST</p>
+                               <p id="member-dni-display" class="text-base text-slate-600 mt-1">C.I: 12.345.678</p>
+                               <p id="member-ubicacion" class="text-sm text-slate-500 font-medium"></p>
+                               <p id="member-status" class="mt-2 text-xs font-semibold uppercase px-3 py-1 rounded-full inline-block self-start"></p>
+                               <div class="mt-2">
+                                   <p class="text-xs text-slate-500">Código de Verificación:</p>
+                                   <p id="member-verification-code" class="text-sm font-mono text-slate-700 break-all"></p>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="bg-slate-100 text-center px-4 py-2 border-t border-slate-200">
+                           <div class="flex justify-between items-center text-[10px] text-slate-500 font-semibold">
+                               <span>info@movidasst.com</span>
+                               <span>www.movidasst.com</span>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="mt-8 p-4 bg-slate-50 rounded-lg border w-full">
+                       <label for="photo-upload" class="block text-sm font-medium text-slate-700 mb-2">Actualizar foto de perfil (máx 5MB):</label>
+                       <input type="file" id="photo-upload" class="text-sm file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100 w-full" accept="image/png, image/jpeg">
+                       <p id="upload-status" class="text-center text-sm mt-2 font-medium h-4" aria-live="polite"></p>
+                   </div>
+
+                   <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
+                       <button id="download-credential" class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70 relative">
+                           <span class="btn-text flex items-center justify-center gap-2 transition-opacity">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+                                <span>Descargar</span>
+                           </span>
+                       </button>
+                       <button id="join-whatsapp-button" class="w-full bg-[#25D366] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#1DAA53] transition-all duration-100 active:scale-95 flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.89 7.89 0 0 0 13.6 2.326zM7.994 14.521a6.57 6.57 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
+                           <span>Unirse al Canal</span>
+                       </button>
+                   </div>
+                   <p id="download-status" class="text-center text-sm font-medium h-4 mt-2" aria-live="polite"></p>
+                   <button id="reset-button" class="mt-2 w-full bg-rose-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-rose-700 transition-all duration-100 active:scale-95">Salir</button>
+               </div>
+            </section>
+        </div>
+        <footer class="text-center mt-6 text-slate-500 text-xs space-y-1">
+            <p><a href="https://www.movidasst.com" target="_blank" class="hover:underline">www.movidasst.com</a></p>
+            <p>&copy; <span id="footer-year"></span> Movida SST. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+    
+    <div id="cropper-modal" class="fixed inset-0 bg-slate-900 bg-opacity-75 flex items-center justify-center p-4 z-50 transition-opacity duration-300 opacity-0 invisible">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-sm transition-transform duration-300 transform scale-95">
+            <h3 class="text-xl font-bold mb-4 text-center">Recortar Imagen</h3>
+            <div id="cropper-container" class="mb-4 bg-slate-200 rounded-lg">
+                <img id="image-to-crop" src="">
+            </div>
+            <div class="flex justify-between gap-4">
+                <button id="cancel-crop-btn" class="w-full bg-slate-200 text-slate-800 font-semibold py-2 px-4 rounded-lg hover:bg-slate-300 transition-all duration-100 active:scale-95">Cancelar</button>
+                <button id="upload-button" class="w-full bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70 relative">
+                    <span id="upload-button-text" class="btn-text transition-opacity">Recortar y Subir</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const googleAppScriptUrl = "https://script.google.com/macros/s/AKfycbw_XUwr80WtyDBJUbKW30Ofe53X6DdC2wcvE_6vC4m8EN8SD98P4Wsa7hWc4CrWBMiGbQ/exec";
+            const sealImageUrl = "https://assets.poap.xyz/600dd07c-7b41-43f1-958e-39d5276b090e.png";
+            let currentMemberDNI = null;
+            let cropper = null;
+
+            const ui = {
+                mainView: document.getElementById('main-view'),
+                resultView: document.getElementById('result-view'),
+                dniInput: document.getElementById('member-dni'),
+                codeInput: document.getElementById('member-code'),
+                errorMessage: document.getElementById('error-message'),
+                searchButton: document.getElementById('search-button'),
+                verificationCodeInput: document.getElementById('verification-code'),
+                verifyButton: document.getElementById('verify-button'),
+                verificationResultMessage: document.getElementById('verification-result-message'),
+                uploadButton: document.getElementById('upload-button'),
+                uploadStatus: document.getElementById('upload-status'),
+                photoInput: document.getElementById('photo-upload'),
+                memberPhoto: document.getElementById('member-photo'),
+                memberName: document.getElementById('member-name'),
+                memberDniDisplay: document.getElementById('member-dni-display'),
+                memberUbicacion: document.getElementById('member-ubicacion'),
+                memberVerificationCode: document.getElementById('member-verification-code'),
+                memberStatus: document.getElementById('member-status'),
+                downloadButton: document.getElementById('download-credential'),
+                joinWhatsappButton: document.getElementById('join-whatsapp-button'),
+                downloadStatus: document.getElementById('download-status'),
+                resetButton: document.getElementById('reset-button'),
+                cropperModal: document.getElementById('cropper-modal'),
+                imageToCrop: document.getElementById('image-to-crop'),
+                cancelCropBtn: document.getElementById('cancel-crop-btn'),
+                skeletonView: document.getElementById('skeleton-view'),
+                credentialCard: document.getElementById('credential')
+            };
+
+            document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+            const manageButtonState = (button, isLoading) => {
+                const textElement = button.querySelector('.btn-text');
+                button.disabled = isLoading;
+
+                if (isLoading) {
+                    if (textElement) {
+                        textElement.classList.add('opacity-0');
+                    }
+                    if (!button.querySelector('.spinner')) {
+                        const spinner = document.createElement('div');
+                        spinner.className = 'spinner spinner-center';
+                        button.appendChild(spinner);
+                    }
+                } else {
+                    if (textElement) {
+                        textElement.classList.remove('opacity-0');
+                    }
+                    const spinner = button.querySelector('.spinner');
+                    if (spinner) {
+                        spinner.remove();
+                    }
+                }
+            };
+            
+            const switchView = (showResults) => {
+                if (showResults) {
+                    ui.mainView.classList.add('hidden-view');
+                    ui.resultView.classList.remove('hidden-view');
+                    ui.skeletonView.classList.remove('hidden');
+                    ui.credentialCard.classList.add('hidden');
+                } else {
+                    ui.resultView.classList.add('hidden-view');
+                    ui.mainView.classList.remove('hidden-view');
+                }
+            };
+
+            const searchMember = async () => {
+                const dni = ui.dniInput.value.trim();
+                const code = ui.codeInput.value.trim();
+                
+                ui.errorMessage.textContent = '';
+                if (!dni || !code) {
+                    ui.errorMessage.textContent = 'Por favor, complete ambos campos.'; return;
+                }
+                
+                manageButtonState(ui.searchButton, true);
+                const url = `${googleAppScriptUrl}?action=search&cedula=${encodeURIComponent(dni)}&codigo=${encodeURIComponent(code)}`;
+
+                try {
+                    const response = await fetch(url, { method: "GET" });
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        currentMemberDNI = data.data.cedula;
+                        switchView(true);
+                        await displayResults(data.data);
+                    } else {
+                        ui.errorMessage.textContent = data.message || 'No se encontraron datos.';
+                    }
+                } catch (error) {
+                    console.error("Error in searchMember function:", error);
+                    ui.errorMessage.textContent = "Ocurrió un error de conexión.";
+                } finally {
+                    manageButtonState(ui.searchButton, false);
+                }
+            };
+            
+            const verifyMemberByCode = async () => {
+                const verificationCode = ui.verificationCodeInput.value.trim().toUpperCase();
+                ui.verificationCodeInput.value = verificationCode;
+                ui.verificationResultMessage.innerHTML = '';
+                ui.verificationResultMessage.className = 'text-center text-sm mt-4 font-medium';
+
+                if (!verificationCode) {
+                    ui.verificationResultMessage.innerHTML = `<p class="text-amber-700">Por favor, introduce un código.</p>`; return;
+                }
+
+                manageButtonState(ui.verifyButton, true);
+                const url = `${googleAppScriptUrl}?action=verify&verificationCode=${encodeURIComponent(verificationCode)}`;
+                
+                try {
+                    const response = await fetch(url, { method: 'GET' });
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        const member = data.data;
+                        const statusIsActive = member.status && member.status.toLowerCase() === 'activo';
+                        
+                        const statusBadgeClasses = statusIsActive ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800';
+                        const cardClasses = statusIsActive ? 'bg-emerald-50 border-emerald-200' : 'bg-amber-50 border-amber-200';
+                        const titleClasses = statusIsActive ? 'text-emerald-800' : 'text-amber-800';
+                        const iconSvg = statusIsActive 
+                            ? '<svg class="w-6 h-6 mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
+                            : '<svg class="w-6 h-6 mr-2 shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
+
+                        const verificationCardHTML = `
+                            <div class="${cardClasses} rounded-lg p-4 w-full text-left relative overflow-hidden">
+                                <img src="${sealImageUrl}" class="absolute -bottom-6 -right-5 w-24 h-24 opacity-10 select-none pointer-events-none" alt="Sello de verificación" crossorigin="anonymous">
+                                <h3 class="text-md font-bold ${titleClasses} flex items-center">
+                                    ${iconSvg}
+                                    Integrante Verificado
+                                </h3>
+                                <div class="mt-3 text-sm text-slate-700 space-y-2 pl-8">
+                                    <div class="flex justify-between gap-4"><span class="font-semibold text-slate-500">Nombre:</span><span class="font-bold text-right">${member.nombre}</span></div>
+                                    <div class="flex justify-between gap-4"><span class="font-semibold text-slate-500">Ubicación:</span><span class="font-bold text-right">${member.estado}</span></div>
+                                    <div class="flex justify-between items-center gap-4"><span class="font-semibold text-slate-500">Status:</span><span class="font-bold text-xs ${statusBadgeClasses} uppercase px-2 py-1 rounded-full">${member.status}</span></div>
+                                </div>
+                            </div>`;
+                        ui.verificationResultMessage.innerHTML = verificationCardHTML;
+
+                    } else {
+                        const errorCardHTML = `
+                            <div class="bg-rose-50 border border-rose-200 rounded-lg p-4 w-full text-left">
+                                <h3 class="text-md font-bold text-rose-800 flex items-center">
+                                    <svg class="w-6 h-6 mr-2 shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    Verificación Fallida
+                                </h3>
+                                <p class="mt-2 text-sm text-rose-700 pl-8">${data.message}</p>
+                            </div>`;
+                        ui.verificationResultMessage.innerHTML = errorCardHTML;
+                    }
+                } catch (error) {
+                    console.error("Error in verifyMemberByCode function:", error);
+                    ui.verificationResultMessage.innerHTML = `<p class="text-rose-600">Ocurrió un error de conexión.</p>`;
+                } finally {
+                    manageButtonState(ui.verifyButton, false);
+                }
+            };
+
+            const handlePhotoSelection = (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+                if (file.size > 5 * 1024 * 1024) {
+                    ui.uploadStatus.textContent = 'El archivo es muy grande (máx 5MB).';
+                    ui.uploadStatus.className = 'text-rose-600 text-center text-sm mt-2 font-medium h-4';
+                    ui.photoInput.value = ''; return;
+                }
+                if (!['image/jpeg', 'image/png'].includes(file.type)) {
+                    ui.uploadStatus.textContent = 'Formato no válido (solo JPG o PNG).';
+                    ui.uploadStatus.className = 'text-rose-600 text-center text-sm mt-2 font-medium h-4';
+                    ui.photoInput.value = ''; return;
+                }
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    ui.imageToCrop.src = e.target.result;
+                    ui.cropperModal.style.display = 'flex';
+                    requestAnimationFrame(() => {
+                        ui.cropperModal.classList.remove('invisible', 'opacity-0');
+                        ui.cropperModal.querySelector('div').classList.remove('scale-95');
+                    });
+                    if(cropper) cropper.destroy();
+                    cropper = new Cropper(ui.imageToCrop, { aspectRatio: 1 / 1, viewMode: 1, background: false, autoCropArea: 0.8 });
+                };
+                reader.readAsDataURL(file);
+            };
+
+            const uploadCroppedPhoto = () => {
+                if (!cropper) return;
+                manageButtonState(ui.uploadButton, true);
+                ui.uploadStatus.textContent = '';
+                const canvas = cropper.getCroppedCanvas({ width: 300, height: 300, imageSmoothingQuality: 'high' });
+                canvas.toBlob((blob) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onloadend = () => {
+                        const base64data = reader.result;
+                        const payload = { cedula: currentMemberDNI, mimeType: blob.type, fileData: base64data.toString() };
+                        
+                        fetch(googleAppScriptUrl, { method: 'POST', body: JSON.stringify(payload) })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data && data.status === 'success' && data.newUrl) {
+                                ui.uploadStatus.className = 'text-emerald-600 text-center text-sm mt-2 font-medium h-4';
+                                ui.uploadStatus.textContent = '¡Foto subida! Actualizando...';
+                                setTimeout(async () => {
+                                    const newImageUrl = await getOptimizedImageUrl(data.newUrl);
+                                    ui.memberPhoto.src = newImageUrl;
+                                    ui.uploadStatus.textContent = 'Imagen actualizada.';
+                                    closeCropper();
+                                }, 1000);
+                            } else { throw new Error(data.message || 'Respuesta no válida del servidor.'); }
+                        })
+                        .catch(error => {
+                            if (error instanceof TypeError && error.message === 'Failed to fetch') {
+                                console.warn("Error de CORS detectado. Asumiendo que la subida fue exitosa y refrescando la credencial.");
+                                ui.uploadStatus.className = 'text-emerald-600 text-center text-sm mt-2 font-medium h-4';
+                                ui.uploadStatus.textContent = 'Procesando foto...';
+                                closeCropper();
+                                setTimeout(() => {
+                                    ui.uploadStatus.textContent = 'Actualizando credencial...';
+                                    const dni = ui.dniInput.value.trim();
+                                    const code = ui.codeInput.value.trim();
+                                    const url = `${googleAppScriptUrl}?action=search&cedula=${encodeURIComponent(dni)}&codigo=${encodeURIComponent(code)}`;
+                                    fetch(url).then(r => r.json()).then(async d => {
+                                        if (d.status === 'success') {
+                                            await displayResults(d.data);
+                                            ui.uploadStatus.textContent = 'Credencial actualizada.';
+                                        } else {
+                                           ui.uploadStatus.textContent = 'Error al refrescar.';
+                                            ui.uploadStatus.className = 'text-rose-600 text-center text-sm mt-2 font-medium h-4';
+                                        }
+                                    });
+                                }, 3500);
+                            } else {
+                                console.error("Upload error:", error);
+                                ui.uploadStatus.textContent = 'Error: No se pudo enviar la foto.';
+                                ui.uploadStatus.className = 'text-rose-600 text-center text-sm mt-2 font-medium h-4';
+                                closeCropper();
+                            }
+                        })
+                        .finally(() => {
+                           manageButtonState(ui.uploadButton, false);
+                        });
+                    };
+                }, 'image/jpeg', 0.9);
+            };
+
+            const closeCropper = () => {
+                ui.cropperModal.classList.add('opacity-0');
+                ui.cropperModal.querySelector('div').classList.add('scale-95');
+                setTimeout(() => {
+                    ui.cropperModal.style.display = 'none';
+                    ui.cropperModal.classList.add('invisible');
+                    if(cropper) cropper.destroy();
+                    cropper = null;
+                    ui.photoInput.value = '';
+                }, 300);
+            };
+            
+            const getOptimizedImageUrl = (driveUrl) => {
+                return new Promise(async (resolve) => {
+                    const placeholder = 'https://placehold.co/112x112/EFEFEF/3A3A3A?text=Error';
+                    if (!driveUrl || !driveUrl.includes('id=')) { resolve(placeholder); return; }
+                    try {
+                        const fileIdMatch = driveUrl.match(/id=([^&]+)/);
+                        if (!fileIdMatch || !fileIdMatch[1]) { resolve(placeholder); return; }
+                        const fileId = fileIdMatch[1];
+                        const imageUrl = `${googleAppScriptUrl}?action=getImage&fileId=${fileId}`;
+                        const response = await fetch(imageUrl, { method: 'GET', redirect: 'follow' });
+                        if (!response.ok) { throw new Error(`La respuesta del script no fue OK: ${response.statusText}`); }
+                        const data = await response.json();
+                        if (data.status === 'success' && data.imageData) { resolve(data.imageData); } 
+                        else { console.error("El script devolvió un error:", data.message); resolve(placeholder); }
+                    } catch (error) {
+                        console.error("Error al obtener la imagen desde el script:", error);
+                        resolve(placeholder);
+                    }
+                });
+            };
+
+            const displayResults = async (memberData) => {
+                // Populate text fields on the actual card (it's hidden for now)
+                ui.memberName.textContent = memberData.nombre || "N/A";
+                ui.memberDniDisplay.textContent = `C.I: ${memberData.cedula || "N/A"}`;
+                ui.memberUbicacion.textContent = memberData.ubicacion || '';
+                ui.memberVerificationCode.textContent = memberData.codigoVerificacion || "N/A";
+                ui.memberStatus.textContent = memberData.status || "N/A";
+
+                ui.memberStatus.classList.remove('bg-emerald-100', 'text-emerald-800', 'bg-amber-100', 'text-amber-800', 'hidden');
+                if (memberData.status && String(memberData.status).toLowerCase() === 'activo') {
+                    ui.memberStatus.classList.add('bg-emerald-100', 'text-emerald-800');
+                } else if (memberData.status && memberData.status !== "N/A"){
+                    ui.memberStatus.classList.add('bg-amber-100', 'text-amber-800');
+                } else {
+                    ui.memberStatus.classList.add('hidden');
+                }
+
+                // Asynchronously fetch the image
+                let imageUrl = 'https://placehold.co/112x112/EFEFEF/3A3A3A?text=Perfil';
+                if (memberData.fotoUrl && memberData.fotoUrl.startsWith('http')) {
+                    imageUrl = await getOptimizedImageUrl(memberData.fotoUrl);
+                }
+                ui.memberPhoto.src = imageUrl;
+
+                // Once the image is loaded (or failed), swap the skeleton for the real card
+                ui.skeletonView.classList.add('hidden');
+                ui.credentialCard.classList.remove('hidden');
+            };
+
+            const downloadCredential = () => {
+                manageButtonState(ui.downloadButton, true);
+                ui.downloadStatus.textContent = '';
+                html2canvas(document.getElementById('credential'), { 
+                    scale: 3, 
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff' 
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `credencial-movida-sst-${currentMemberDNI}.png`;
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
+                }).catch(err => {
+                    console.error("Error generating image:", err);
+                    ui.downloadStatus.className = 'text-rose-600 text-center text-sm font-medium h-4 mt-2';
+                    ui.downloadStatus.textContent = "No se pudo generar la imagen.";
+                }).finally(() => {
+                    manageButtonState(ui.downloadButton, false);
+                });
+            };
+            
+            const joinWhatsAppChannel = () => {
+                const whatsappUrl = "https://whatsapp.com/channel/0029Va0mlH5Jf05mrcCz8r3e";
+                window.open(whatsappUrl, '_blank');
+            };
+
+            const resetView = () => {
+                switchView(false);
+                setTimeout(() => {
+                    ui.dniInput.value = '';
+                    ui.codeInput.value = '';
+                    ui.verificationCodeInput.value = '';
+                    ui.errorMessage.textContent = '';
+                    ui.uploadStatus.textContent = '';
+                    ui.downloadStatus.textContent = '';
+                    ui.verificationResultMessage.innerHTML = '';
+                    ui.memberPhoto.src = 'https://placehold.co/112x112/EFEFEF/3A3A3A?text=Perfil';
+                    currentMemberDNI = null;
+                }, 400);
+            };
+            
+            ui.searchButton.addEventListener('click', searchMember);
+            ui.verifyButton.addEventListener('click', verifyMemberByCode);
+            ui.photoInput.addEventListener('change', handlePhotoSelection);
+            ui.uploadButton.addEventListener('click', uploadCroppedPhoto);
+            ui.cancelCropBtn.addEventListener('click', closeCropper);
+            ui.downloadButton.addEventListener('click', downloadCredential);
+            ui.joinWhatsappButton.addEventListener('click', joinWhatsAppChannel);
+            ui.resetButton.addEventListener('click', resetView);
+            ui.codeInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') searchMember(); });
+            ui.dniInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') searchMember(); });
+            ui.verificationCodeInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') verifyMemberByCode(); });
+        });
+    </script>
+</body>
+</html>
+

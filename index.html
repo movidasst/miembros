@@ -13,8 +13,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
-        .card { background-color: white; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.1); border: 1px solid #e2e8f0; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .card { background-color: white; border-radius: 1.5rem; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); border: 1px solid #e2e8f0; }
         .spinner { border-radius: 50%; animation: spin 1s linear infinite; border: 4px solid rgba(255,255,255,0.3); border-top-color: #fff; width: 24px; height: 24px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
@@ -33,9 +33,11 @@
             position: absolute;
         }
 
-        .custom-input { background-color: #f8fafc; border: 1px solid #cbd5e1; transition: all 0.2s ease-in-out; }
-        .custom-input:focus { border-color: #14b8a6; background-color: white; box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.2); }
+        .custom-input { background-color: #fff; border: 1px solid #e2e8f0; transition: all 0.2s ease-in-out; }
+        .custom-input:focus { border-color: #0d9488; background-color: #fff; box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1); outline: none; }
         
+        .inner-card { background-color: #f8fafc; border: 1px solid #f1f5f9; border-radius: 1rem; }
+
         #cropper-modal { display: none; }
         #cropper-container img { max-width: 100%; }
         #member-photo { object-fit: cover; width: 7rem; height: 7rem; }
@@ -46,184 +48,183 @@
         }
     </style>
 </head>
-<body class="text-slate-800 flex items-center justify-center min-h-screen p-4">
+<body class="text-slate-800 flex items-center justify-center min-h-screen p-4 bg-slate-100">
 
-    <div class="w-full max-w-md lg:max-w-5xl mx-auto">
-        <div class="card p-8 lg:p-12 relative overflow-hidden">
+    <div class="w-full max-w-md lg:max-w-6xl mx-auto">
+        <div class="card p-8 lg:p-12 relative overflow-hidden bg-white">
             
             <section id="main-view" class="view w-full">
-                <header class="text-center mb-8 lg:mb-12">
-                    <img src="https://assets.poap.xyz/ae80dd44-a4b8-4a90-9d76-2da198a1f6fc.png" alt="Logo Movida SST" class="mx-auto h-32 w-auto mb-6" crossorigin="anonymous">
-                    <h1 class="text-2xl lg:text-3xl font-bold text-slate-900">Portal de Los profesionales de La Movida de SST DAO Network</h1>
-                    <p class="text-sm text-slate-500 mt-1">Generación de Credencial y Verificación Digital</p>
+                <header class="text-center mb-10 lg:mb-14">
+                    <img src="https://assets.poap.xyz/ae80dd44-a4b8-4a90-9d76-2da198a1f6fc.png" alt="Logo Movida SST" class="mx-auto h-36 w-auto mb-6 hover:scale-105 transition-transform duration-300" crossorigin="anonymous">
+                    <h1 class="text-2xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">Portal de Profesionales</h1>
+                    <p class="text-base text-slate-500 mt-2 font-medium">La Movida de SST DAO Network</p>
                 </header>
 
-                <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-start">
+                <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16 items-start">
                     
-                    <!-- Columna Izquierda: Acceso y Herramientas --><div class="space-y-8">
-                        <div class="p-6 bg-slate-50 rounded-xl border border-slate-200">
-                            <h2 class="text-lg font-bold text-slate-800 text-center mb-1">Acceso a tu Credencial</h2>
-                            <p class="text-center text-sm text-slate-500 mb-4">Ingresa tus datos para ver tu credencial.</p>
-                            <div class="space-y-4">
+                    <!-- Columna Izquierda: Área de Miembros (Acceso + Registro) -->
+                    <div class="inner-card p-6 lg:p-8 h-full flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow duration-300">
+                        <div>
+                            <div class="text-center mb-6">
+                                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-teal-100 text-teal-600 mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-badge" viewBox="0 0 16 16"><path d="M6.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path d="M4.5 0A2.5 2.5 0 0 0 2 2.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2.5A2.5 2.5 0 0 0 11.5 0h-7zM3 2.5A1.5 1.5 0 0 1 4.5 1h7A1.5 1.5 0 0 1 13 2.5v10.795a4.2 4.2 0 0 0-.776-2.81c-.545-.638-1.433-1.056-2.5-1.056-1.068 0-1.956.418-2.501 1.056-.544.637-1.132 1.946-1.222 2.81H3V2.5z"/></svg>
+                                </div>
+                                <h2 class="text-xl font-bold text-slate-800">Acceso a Miembros</h2>
+                                <p class="text-sm text-slate-500">Consulta y descarga tu credencial digital</p>
+                            </div>
+                            
+                            <div class="space-y-5">
                                 <div>
-                                    <label for="member-dni" class="block text-sm font-medium text-slate-700">Cédula o DNI</label>
-                                    <input type="text" id="member-dni" placeholder="Ej: 12345678" class="custom-input mt-1 w-full p-3 rounded-lg" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                    <label for="member-dni" class="block text-sm font-semibold text-slate-700 mb-1">Cédula o DNI</label>
+                                    <input type="text" id="member-dni" placeholder="Ej: 12345678" class="custom-input w-full p-3.5 rounded-xl text-slate-700 placeholder:text-slate-400" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                 </div>
                                 <div>
-                                    <label for="member-code" class="block text-sm font-medium text-slate-700">Clave de Registro</label>
-                                    <input type="text" id="member-code" placeholder="Ej: MOVSST-XXXX" class="custom-input mt-1 w-full p-3 rounded-lg">
+                                    <label for="member-code" class="block text-sm font-semibold text-slate-700 mb-1">Clave de Registro</label>
+                                    <input type="text" id="member-code" placeholder="Ej: MOVSST-XXXX" class="custom-input w-full p-3.5 rounded-xl text-slate-700 placeholder:text-slate-400">
                                 </div>
                             </div>
-                            <button id="search-button" class="mt-6 w-full bg-teal-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-teal-700 transition-all duration-100 active:scale-95 shadow-md flex items-center justify-center gap-2 disabled:opacity-70 relative">
-                                <span id="search-button-text" class="btn-text transition-opacity">Ingresar</span>
+                            
+                            <button id="search-button" class="mt-8 w-full bg-teal-600 text-white font-bold py-3.5 px-6 rounded-xl hover:bg-teal-700 focus:ring-4 focus:ring-teal-200 transition-all duration-200 shadow-lg shadow-teal-600/20 active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed relative">
+                                <span id="search-button-text" class="btn-text transition-opacity">Ingresar al Portal</span>
                             </button>
-                            <p id="error-message" class="text-rose-600 text-center text-sm mt-4 font-medium h-4" aria-live="polite"></p>
+                            <p id="error-message" class="text-rose-600 text-center text-sm mt-3 font-medium min-h-[1rem]" aria-live="polite"></p>
                         </div>
 
-                        <div class="pt-6 border-t border-slate-200">
-                            <h2 class="text-lg font-bold text-slate-800 text-center mb-4">Recursos para Profesionales</h2>
-                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-3 gap-y-4">
-                                <!-- Ecosistema Movida SST --><h3 class="text-sm font-semibold text-slate-600 col-span-full mb-1 border-b pb-2">Ecosistema Movida SST</h3>
-                                <a href="https://forms.gle/dwFGVyxxzcsyL2GJ7" target="_blank" class="w-full bg-slate-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-slate-700 transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5-.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/></svg>
-                                    <span>Registrar Membresía</span>
-                                </a>
-                                <a href="https://movidasst.org/" target="_blank" class="w-full bg-purple-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-purple-700 transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mortarboard-fill" viewBox="0 0 16 16"><path d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0l7.5-3a.5.5 0 0 0 .025-.917l-7.5-3.5Z"/><path d="M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466 4.176 9.032Z"/></svg>
-                                    <span>Academia Movida SST</span>
-                                </a>
-                                 <a href="https://www.movidasst.com/cursos" target="_blank" class="w-full bg-amber-500 text-white font-semibold py-3 px-4 rounded-lg hover:bg-amber-600 transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/></svg>
-                                    <span>Cursos</span>
-                                </a>
-                                <a href="https://www.movidasst.com/archivos" target="_blank" class="w-full bg-sky-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-sky-700 transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-folder-fill" viewBox="0 0 16 16"><path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-1.217 7.303a2 2 0 0 1-1.991 1.516H3.428a2 2 0 0 1-1.991-1.516L.22 5.181A2 2 0 0 1 2.218 3h2.592L6.5 1.5a.5.5 0 0 1 .5.5V3h2.828l.586-.586z"/></svg>
-                                    <span>Drive de La Movida SST</span>
-                                </a>
-
-                                <!-- Comunidades y Redes --><h3 class="text-sm font-semibold text-slate-600 col-span-full mt-6 mb-1 border-b pb-2">Comunidades y Redes</h3>
-                                <a href="https://www.linkedin.com/groups/12893335/" target="_blank" class="w-full bg-[#0077B5] text-white font-semibold py-3 px-4 rounded-lg hover:bg-[#005E92] transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-linkedin" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
-                                    <span>LinkedIn</span>
-                                </a>
-                                <a href="https://chat.whatsapp.com/DtQHMJqiLOmFOin4cHJODc" target="_blank" class="w-full bg-[#25D366] text-white font-semibold py-3 px-4 rounded-lg hover:bg-[#1DAA53] transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.89 7.89 0 0 0 13.6 2.326zM7.994 14.521a6.57 6.57 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
-                                    <span>WhatsApp</span>
-                                </a>
-                                <a href="https://t.me/movidasst" target="_blank" class="w-full bg-[#2AABEE] text-white font-semibold py-3 px-4 rounded-lg hover:bg-[#1B98D4] transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telegram" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.287 5.906c.778.324 2.334.994 2.334.994l2.252-.315a.5.5 0 0 1 .62.314l-1.387 6.72a.5.5 0 0 1-.945.18l-2.635-2.25-1.577 1.577a.5.5 0 0 1-.858-.25l-1.428-5.01a.5.5 0 0 1 .18-.577l1.45-1.037.45-.324z"/></svg>
-                                    <span>Telegram</span>
-                                </a>
-
-                                <!-- Herramientas Web3 --><h3 class="text-sm font-semibold text-slate-600 col-span-full mt-6 mb-1 border-b pb-2">Herramientas Web3</h3>
-                                <a href="https://poap.xyz/" target="_blank" class="w-full bg-indigo-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-indigo-700 transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M10.854 4.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 6.793l2.646-2.647a.5.5 0 0 1 .708 0z"/><path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.01a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"/></svg>
-                                    <span>Crea tu POAP</span>
-                                </a>
-                                <a href="https://metamask.io/es/download" target="_blank" class="w-full bg-orange-500 text-white font-semibold py-3 px-4 rounded-lg hover:bg-orange-600 transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16"><path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5v-8A1.5 1.5 0 0 1 1.5 3H2V1.78a1.5 1.5 0 0 1 1.864-1.454l1.258.251a.5.5 0 0 1 .45.495v2.064A.5.5 0 0 1 5.5 3.5h5a.5.5 0 0 1 .478-.355V1.27a.5.5 0 0 1 .45-.495l1.258-.251zM1.5 4a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-13z"/></svg>
-                                    <span>Crea tu Wallet</span>
-                                </a>
-                            </div>
+                        <!-- Botón de Registro integrado al final de la tarjeta -->
+                        <div class="mt-6 pt-6 border-t border-slate-200/60 text-center">
+                            <p class="text-xs text-slate-400 mb-3 font-medium uppercase tracking-wider">¿Aún no eres miembro?</p>
+                            <a href="https://forms.gle/dwFGVyxxzcsyL2GJ7" target="_blank" class="w-full bg-white text-slate-600 font-semibold py-3 px-4 rounded-xl border-2 border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all duration-200 flex items-center justify-center gap-2 text-sm group">
+                                <span class="group-hover:text-slate-800 transition-colors">Registrarse en la Membresía</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short group-hover:translate-x-1 transition-transform" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/></svg>
+                            </a>
                         </div>
                     </div>
 
-                    <!-- Columna Derecha: Verificación --><div class="mt-8 pt-6 border-t border-slate-200 lg:mt-0 lg:pt-0 lg:border-t-0">
-                         <h2 class="text-lg font-bold text-slate-800 text-center mb-1">Verificar un Integrante</h2>
-                         <p class="text-center text-sm text-slate-500 mb-4">Introduce el código de verificación.</p>
-                        <div>
-                            <label for="verification-code" class="sr-only">Código de Verificación</label>
-                            <input type="text" id="verification-code" placeholder="Ej: 3GPHQ" class="custom-input mt-1 w-full p-3 rounded-lg text-center tracking-widest font-mono uppercase">
+                    <!-- Columna Derecha: Verificación (Estilizada igual que la izquierda) -->
+                    <div class="mt-8 lg:mt-0 inner-card p-6 lg:p-8 h-full shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col">
+                         <div class="text-center mb-6">
+                            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-200 text-slate-600 mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-shield-check" viewBox="0 0 16 16"><path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.938.533.314.124.706.326 1.138.528a4.996 4.996 0 0 1 1.096.53c.22.146.495.21.77.21.275 0 .55-.064.77-.21a4.996 4.996 0 0 1 1.096-.53c.432-.202.824-.404 1.138-.528a10.669 10.669 0 0 0 4.15-4.526 8.537 8.537 0 0 0 .56-3.834.48.48 0 0 0-.328-.39c-.553-.157-1.745-.537-3.233-.94a61.464 61.464 0 0 0-2.84-.856C9.17 1.41 6.824 1.41 5.338 1.59zm3.667 8.356a1.125 1.125 0 1 1 0-2.25 1.125 1.125 0 0 1 0 2.25zm.088-3.085a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1a.75.75 0 0 1 .75-.75z"/></svg>
+                            </div>
+                            <h2 class="text-xl font-bold text-slate-800">Verificar Integrante</h2>
+                            <p class="text-sm text-slate-500">Valida la autenticidad de un miembro</p>
                         </div>
-                        <button id="verify-button" class="mt-4 w-full bg-slate-700 text-white font-semibold py-3 px-6 rounded-lg hover:bg-slate-800 transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70 relative">
-                            <span id="verify-button-text" class="btn-text transition-opacity">Verificar Código</span>
-                        </button>
-                        <div id="verification-result-message" class="text-center text-sm mt-4 font-medium" aria-live="polite"></div>
+
+                        <div class="flex-grow flex flex-col justify-center">
+                            <label for="verification-code" class="block text-sm font-semibold text-slate-700 mb-1 text-center">Código de Verificación</label>
+                            <input type="text" id="verification-code" placeholder="Ej: 3GPHQ" class="custom-input w-full p-4 rounded-xl text-center tracking-[0.2em] font-mono font-bold text-lg uppercase text-slate-800 placeholder:normal-case placeholder:tracking-normal placeholder:font-sans placeholder:text-slate-400 placeholder:text-base">
+                            
+                            <button id="verify-button" class="mt-6 w-full bg-slate-800 text-white font-bold py-3.5 px-6 rounded-xl hover:bg-slate-900 focus:ring-4 focus:ring-slate-300 transition-all duration-200 shadow-lg shadow-slate-800/20 active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed relative">
+                                <span id="verify-button-text" class="btn-text transition-opacity">Validar Código</span>
+                            </button>
+                            <div id="verification-result-message" class="text-center text-sm mt-6 font-medium" aria-live="polite"></div>
+                        </div>
+                        
+                         <div class="mt-auto pt-6 border-t border-slate-200/60 text-center opacity-0 pointer-events-none">
+                             <!-- Spacer to match left column height visual balance if needed, or keeping it clean -->
+                              <p class="text-xs text-slate-400 mb-3 font-medium uppercase tracking-wider">&nbsp;</p>
+                             <div class="py-3 px-4">&nbsp;</div>
+                         </div>
                     </div>
                 </div>
 
             </section>
             
             <section id="result-view" class="view hidden-view w-full">
-               <div class="w-full max-w-md flex flex-col items-center">
-                   <h2 class="text-xl font-bold text-center mb-4">Credencial de Integrante</h2>
+               <div class="w-full max-w-md mx-auto flex flex-col items-center">
+                   <h2 class="text-2xl font-bold text-center mb-6 text-slate-800">Credencial Digital</h2>
                    
-                   <!-- Actual Credential --><div id="credential" class="bg-white rounded-xl shadow-lg overflow-hidden font-sans text-slate-800 w-full border border-slate-200 relative">
+                   <!-- Actual Credential --><div id="credential" class="bg-white rounded-2xl shadow-xl overflow-hidden font-sans text-slate-800 w-full border border-slate-200 relative">
                        <img src="https://assets.poap.xyz/600dd07c-7b41-43f1-958e-39d5276b090e.png" alt="Sello de Verificación" class="seal-credential" crossorigin="anonymous">
-                       <div class="bg-gradient-to-r from-teal-600 to-teal-700 p-4 flex justify-between items-center border-b border-teal-800 relative">
+                       <div class="bg-gradient-to-r from-teal-600 to-teal-800 p-5 flex justify-between items-center border-b border-teal-800 relative">
                            <div>
-                               <h2 class="text-xl font-bold text-white">La Movida de SST</h2>
-                               <p class="text-xs text-teal-100 italic">De la reacción a la prevención</p>
+                               <h2 class="text-xl font-bold text-white tracking-wide">La Movida de SST</h2>
+                               <p class="text-xs text-teal-100 italic opacity-90 mt-0.5">De la reacción a la prevención</p>
                            </div>
-                           <img src="https://assets.poap.xyz/27226ed6-b9f6-4362-8ea6-8ad3f9c3d641.png" alt="Logo Movida SST" class="absolute top-3 right-3 h-12 w-auto opacity-80" crossorigin="anonymous">
+                           <img src="https://assets.poap.xyz/27226ed6-b9f6-4362-8ea6-8ad3f9c3d641.png" alt="Logo Movida SST" class="absolute top-3 right-4 h-12 w-auto opacity-90 drop-shadow-sm" crossorigin="anonymous">
                        </div>
-                       <div class="p-5 flex items-stretch space-x-5">
+                       <div class="p-6 flex items-stretch space-x-6">
                            <div class="flex flex-col items-center justify-start flex-shrink-0">
-                               <img id="member-photo" src="https://placehold.co/112x112/EFEFEF/3A3A3A?text=Perfil" class="rounded-lg border-2 border-slate-200" crossorigin="anonymous" onerror="this.onerror=null;this.src='https://placehold.co/112x112/EFEFEF/3A3A3A?text=Perfil';">
-                               <div id="qrcode-container" class="mt-3 p-1 bg-white border rounded-md">
+                               <img id="member-photo" src="https://placehold.co/112x112/EFEFEF/3A3A3A?text=Perfil" class="rounded-xl border-4 border-slate-50 shadow-md object-cover w-28 h-28" crossorigin="anonymous" onerror="this.onerror=null;this.src='https://placehold.co/112x112/EFEFEF/3A3A3A?text=Perfil';">
+                               <div id="qrcode-container" class="mt-4 p-1.5 bg-white border border-slate-100 rounded-lg shadow-sm">
                                  <div id="qrcode"></div>
                                </div>
                            </div>
                            <div class="flex-grow flex flex-col justify-center">
-                                <p class="text-xs font-medium text-slate-500">Credencial de integrante de la Comunidad Digital Movida de SST</p>
-                               <h3 id="member-name" class="text-2xl font-bold leading-tight mt-1">Nombre Apellido</h3>
-                               <p class="text-sm font-semibold text-teal-700">Profesional de SST</p>
-                               <p id="member-dni-display" class="text-base text-slate-600 mt-1">C.I: 12.345.678</p>
-                               <p id="member-ubicacion" class="text-sm text-slate-500 font-medium"></p>
-                               <p id="member-status" class="mt-2 text-xs font-semibold uppercase px-3 py-1 rounded-full inline-block self-start"></p>
-                               <div class="mt-2">
-                                   <p class="text-xs text-slate-500">Código de Verificación:</p>
-                                   <p id="member-verification-code" class="text-sm font-mono text-slate-700 break-all"></p>
+                                <div class="mb-1">
+                                    <span class="inline-block px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold uppercase tracking-wider rounded">Miembro Verificado</span>
+                                </div>
+                               <h3 id="member-name" class="text-2xl font-extrabold leading-tight text-slate-900">Nombre Apellido</h3>
+                               <p class="text-sm font-bold text-teal-700 mt-0.5">Profesional de SST</p>
+                               
+                               <div class="mt-3 space-y-1">
+                                   <p id="member-dni-display" class="text-sm text-slate-600 font-medium flex items-center gap-1">
+                                       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-card-text" viewBox="0 0 16 16"><path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/><path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/></svg>
+                                       C.I: 12.345.678
+                                    </p>
+                                   <p id="member-ubicacion" class="text-sm text-slate-500 font-medium flex items-center gap-1"></p>
+                               </div>
+
+                               <p id="member-status" class="mt-2 text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full inline-block self-start border"></p>
+                               
+                               <div class="mt-3 pt-2 border-t border-slate-100">
+                                   <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Código de Verificación</p>
+                                   <p id="member-verification-code" class="text-sm font-mono font-bold text-slate-700 tracking-wider"></p>
                                </div>
                            </div>
                        </div>
-                       <div class="bg-slate-100 text-center px-4 py-2 border-t border-slate-200">
-                           <div class="flex justify-between items-center text-[10px] text-slate-500 font-semibold">
-                               <span>movidasst@gmail.com</span>
-                               <span>www.movidasst.com</span>
-                           </div>
+                       <div class="bg-slate-50 text-center px-4 py-3 border-t border-slate-200 flex justify-between items-center text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
+                            <span>movidasst@gmail.com</span>
+                            <span>www.movidasst.com</span>
                        </div>
                    </div>
 
-                   <div class="mt-8 p-4 bg-slate-50 rounded-lg border w-full">
-                       <label for="photo-upload" class="block text-sm font-medium text-slate-700 mb-2">Actualizar foto de perfil (máx 5MB):</label>
-                       <input type="file" id="photo-upload" class="text-sm file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100 w-full" accept="image/png, image/jpeg">
+                   <div class="mt-8 p-6 bg-slate-50 rounded-xl border border-slate-200 w-full shadow-sm">
+                       <label for="photo-upload" class="block text-sm font-bold text-slate-700 mb-2 flex items-center gap-2">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera" viewBox="0 0 16 16"><path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"/><path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/></svg>
+                           Actualizar foto de perfil
+                           <span class="text-xs font-normal text-slate-400 ml-auto">(máx 5MB)</span>
+                       </label>
+                       <input type="file" id="photo-upload" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100 cursor-pointer" accept="image/png, image/jpeg">
                        <p id="upload-status" class="text-center text-sm mt-2 font-medium h-4" aria-live="polite"></p>
                    </div>
 
-                   <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
-                       <button id="download-credential" class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70 relative">
+                   <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+                       <button id="download-credential" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-blue-700 transition-all duration-200 active:scale-[0.98] shadow-md shadow-blue-600/20 flex items-center justify-center gap-2 disabled:opacity-70 relative">
                            <span class="btn-text flex items-center justify-center gap-2 transition-opacity">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
-                                <span>Descargar</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+                                <span>Descargar Credencial</span>
                            </span>
                        </button>
-                       <button id="join-whatsapp-button" class="w-full bg-[#25D366] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#1DAA53] transition-all duration-100 active:scale-95 flex items-center justify-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.89 7.89 0 0 0 13.6 2.326zM7.994 14.521a6.57 6.57 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
-                           <span>Unirse al Canal</span>
+                       <button id="join-whatsapp-button" class="w-full bg-[#25D366] text-white font-bold py-3 px-4 rounded-xl hover:bg-[#1DAA53] transition-all duration-200 active:scale-[0.98] shadow-md shadow-green-500/20 flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.89 7.89 0 0 0 13.6 2.326zM7.994 14.521a6.57 6.57 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
+                            <span>Unirse al Canal</span>
                        </button>
                    </div>
                    <p id="download-status" class="text-center text-sm font-medium h-4 mt-2" aria-live="polite"></p>
-                   <button id="reset-button" class="mt-2 w-full bg-rose-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-rose-700 transition-all duration-100 active:scale-95">Salir</button>
+                   
+                   <button id="reset-button" class="mt-4 text-rose-600 font-semibold py-2 px-4 rounded-lg hover:bg-rose-50 transition-all duration-200 text-sm">
+                       Cerrar Sesión / Volver
+                   </button>
                </div>
             </section>
         </div>
-        <footer class="text-center mt-6 text-slate-500 text-xs space-y-1">
-            <p><a href="https://www.movidasst.com" target="_blank" class="hover:underline">www.movidasst.com</a></p>
+        <footer class="text-center mt-8 text-slate-400 text-xs space-y-1 font-medium">
+            <p><a href="https://www.movidasst.com" target="_blank" class="hover:text-slate-600 transition-colors">www.movidasst.com</a></p>
             <p>&copy; <span id="footer-year"></span> Movida SST. Todos los derechos reservados.</p>
         </footer>
     </div>
     
-    <div id="cropper-modal" class="fixed inset-0 bg-slate-900 bg-opacity-75 flex items-center justify-center p-4 z-50 transition-opacity duration-300 opacity-0 invisible">
-        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-sm transition-transform duration-300 transform scale-95">
-            <h3 class="text-xl font-bold mb-4 text-center">Recortar Imagen</h3>
-            <div id="cropper-container" class="mb-4 bg-slate-200 rounded-lg">
+    <div id="cropper-modal" class="fixed inset-0 bg-slate-900/90 backdrop-blur-sm flex items-center justify-center p-4 z-50 transition-opacity duration-300 opacity-0 invisible">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm transition-transform duration-300 transform scale-95 border border-slate-200">
+            <h3 class="text-xl font-bold mb-4 text-center text-slate-800">Recortar Imagen</h3>
+            <div id="cropper-container" class="mb-6 bg-slate-100 rounded-xl overflow-hidden border border-slate-200">
                 <img id="image-to-crop" src="">
             </div>
-            <div class="flex justify-between gap-4">
-                <button id="cancel-crop-btn" class="w-full bg-slate-200 text-slate-800 font-semibold py-2 px-4 rounded-lg hover:bg-slate-300 transition-all duration-100 active:scale-95">Cancelar</button>
-                <button id="upload-button" class="w-full bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-all duration-100 active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70 relative">
-                    <span id="upload-button-text" class="btn-text transition-opacity">Recortar y Subir</span>
+            <div class="flex justify-between gap-3">
+                <button id="cancel-crop-btn" class="w-full bg-slate-100 text-slate-700 font-bold py-3 px-4 rounded-xl hover:bg-slate-200 transition-all duration-200">Cancelar</button>
+                <button id="upload-button" class="w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-teal-700 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-70 relative shadow-lg shadow-teal-600/20">
+                    <span id="upload-button-text" class="btn-text transition-opacity">Guardar</span>
                 </button>
             </div>
         </div>
@@ -305,7 +306,7 @@
                     }, 300);
                 } else {
                     ui.resultView.classList.add('hidden-view');
-                     setTimeout(() => {
+                      setTimeout(() => {
                         card.style.minHeight = card.offsetHeight + 'px';
                         ui.resultView.style.display = 'none';
                         ui.mainView.style.display = '';
@@ -480,7 +481,7 @@
                                             ui.uploadStatus.textContent = 'Credencial actualizada.';
                                         } else {
                                            ui.uploadStatus.textContent = 'Error al refrescar.';
-                                            ui.uploadStatus.className = 'text-rose-600 text-center text-sm mt-2 font-medium h-4';
+                                           ui.uploadStatus.className = 'text-rose-600 text-center text-sm mt-2 font-medium h-4';
                                         }
                                     });
                                 }, 3500);
@@ -538,11 +539,12 @@
                 ui.memberVerificationCode.textContent = memberData.codigoVerificacion || "N/A";
                 ui.memberStatus.textContent = memberData.status || "N/A";
 
-                ui.memberStatus.classList.remove('bg-emerald-100', 'text-emerald-800', 'bg-amber-100', 'text-amber-800', 'hidden');
+                ui.memberStatus.classList.remove('bg-emerald-100', 'text-emerald-800', 'border-emerald-200', 'text-emerald-700', 'bg-amber-100', 'text-amber-800', 'border-amber-200', 'hidden');
+                
                 if (memberData.status && String(memberData.status).toLowerCase() === 'activo') {
-                    ui.memberStatus.classList.add('bg-emerald-100', 'text-emerald-800');
+                    ui.memberStatus.classList.add('bg-emerald-100', 'text-emerald-700', 'border-emerald-200');
                 } else if (memberData.status && memberData.status !== "N/A"){
-                    ui.memberStatus.classList.add('bg-amber-100', 'text-amber-800');
+                    ui.memberStatus.classList.add('bg-amber-100', 'text-amber-800', 'border-amber-200');
                 } else {
                     ui.memberStatus.classList.add('hidden');
                 }
@@ -550,8 +552,8 @@
                 ui.qrcode.innerHTML = '';
                 new QRCode(ui.qrcode, {
                     text: "https://portal.movidasst.com/",
-                    width: 96,
-                    height: 96,
+                    width: 80,
+                    height: 80,
                     colorDark : "#000000",
                     colorLight : "#ffffff",
                     correctLevel : QRCode.CorrectLevel.H
@@ -621,7 +623,3 @@
     </script>
 </body>
 </html>
-
-
-
-

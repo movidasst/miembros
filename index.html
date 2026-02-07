@@ -15,7 +15,6 @@
     <style>
         body { font-family: 'Outfit', sans-serif; background-color: #f1f5f9; color: #1e293b; }
         
-        /* Tarjeta principal limpia */
         .card { 
             background-color: #ffffff; 
             border-radius: 1.5rem; 
@@ -25,13 +24,11 @@
         
         .spinner { border-radius: 50%; animation: spin 1s linear infinite; border: 3px solid rgba(20, 184, 166, 0.2); border-top-color: #0d9488; width: 24px; height: 24px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
         .spinner-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
 
         .view { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
         .hidden-view { opacity: 0; transform: translateY(10px); pointer-events: none; position: absolute; }
 
-        /* Inputs Limpios */
         .custom-input { 
             background-color: #ffffff; 
             border: 1px solid #cbd5e1; 
@@ -50,24 +47,22 @@
 
         #cropper-modal { display: none; }
         #cropper-container img { max-width: 100%; }
-        
-        /* Credencial Styles */
         #member-photo { object-fit: cover; }
-        /* Sello ajustado */
-        .seal-credential { position: absolute; width: 200px; height: 200px; bottom: -50px; right: 10%; opacity: 0.05; pointer-events: none; }
         
+        .seal-credential { position: absolute; width: 200px; height: 200px; bottom: -50px; right: 10%; opacity: 0.05; pointer-events: none; z-index: 1; }
         #qrcode img { margin: auto; }
 
-        /* Patrón de seguridad sutil para fondo claro */
         .security-pattern {
             background-color: #ffffff;
-            background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
-            background-size: 24px 24px;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(20, 184, 166, 0.04) 0%, transparent 60%),
+                repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(148, 163, 184, 0.08) 3px, rgba(148, 163, 184, 0.08) 4px),
+                repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(148, 163, 184, 0.08) 3px, rgba(148, 163, 184, 0.08) 4px);
+            background-blend-mode: multiply;
         }
         
         .font-mono-tech { font-family: 'JetBrains Mono', monospace; }
         
-        /* Dimensiones FIJAS para credencial horizontal */
         #credential {
             width: 600px !important;
             height: 380px !important;
@@ -76,6 +71,7 @@
             margin: 0 auto;
             position: relative;
             overflow: hidden;
+            box-sizing: border-box; 
         }
 
         .credential-scroll-container {
@@ -93,22 +89,18 @@
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 bg-slate-100">
 
-    <!-- Contenedor Responsive Mejorado -->
     <div class="w-full max-w-lg md:max-w-2xl lg:max-w-6xl mx-auto transition-all duration-300">
         <div class="card p-6 md:p-8 lg:p-12 relative overflow-hidden bg-white">
             
             <section id="main-view" class="view w-full">
                 <header class="text-center mb-8 md:mb-10 lg:mb-14">
-                    <!-- Logo Responsive: LIMPIO (Sin atributos extra, igual que el ejemplo que funciona) -->
                     <img src="https://assets.poap.xyz/7a0347ca-c7eb-4842-b5f5-b72c364b1fff.png" alt="Logo Movida SST" class="mx-auto h-32 md:h-48 lg:h-64 w-auto mb-4 md:mb-6 hover:scale-110 transition-transform duration-300">
                     <h1 class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">Portal para Profesionales de SST</h1>
-                    <!-- ESTRATÉGICO: Subtítulo aclaratorio -->
                     <p class="text-xs md:text-sm font-bold text-teal-600 uppercase tracking-widest mt-1">Seguridad y Salud en el Trabajo</p>
                     <p class="text-sm md:text-base text-slate-500 mt-2 font-medium tracking-wide">La Movida de SST DAO Network</p>
                 </header>
 
                 <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16 items-start">
-                    
                     <!-- Columna Izquierda: Acceso -->
                     <div class="inner-card p-6 lg:p-8 h-full flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300 group bg-slate-50">
                         <div>
@@ -169,7 +161,7 @@
                          <div class="mt-auto pt-6 border-t border-slate-200 text-center opacity-0 pointer-events-none">
                               <p class="text-xs text-slate-400 mb-3 font-medium uppercase tracking-wider">&nbsp;</p>
                              <div class="py-3 px-4">&nbsp;</div>
-                         </div>
+                          </div>
                     </div>
                 </div>
 
@@ -181,83 +173,67 @@
                    
                    <p class="text-[10px] uppercase tracking-widest text-slate-400 mb-4 md:hidden">⟵ Desliza para ver completa ⟶</p>
                    
-                   <!-- Contenedor scrollable -->
                    <div class="credential-scroll-container">
-                       <!-- CREDENCIAL HORIZONTAL CLARA (600x380) -->
                        <div id="credential" class="security-pattern bg-white rounded-2xl shadow-xl overflow-hidden font-sans text-slate-800 border border-slate-200 flex flex-col relative">
                            
-                           <!-- Sello de fondo (LIMPIO) -->
                            <img src="https://assets.poap.xyz/600dd07c-7b41-43f1-958e-39d5276b090e.png" alt="Sello de Verificación" class="seal-credential">
                            
-                           <!-- Header Horizontal con Gradiente Elegante -->
                            <div class="bg-gradient-to-r from-teal-700 to-slate-800 p-5 h-24 flex justify-between items-center relative z-10 shrink-0">
                                <div class="pl-2 flex flex-col justify-center h-full">
                                    <h2 class="text-lg font-bold text-white tracking-wide leading-tight drop-shadow-sm">La Movida de SST DAO Network</h2>
-                                   <!-- ESTRATÉGICO: Texto agregado aquí también -->
                                    <p class="text-[9px] text-teal-300 font-bold uppercase tracking-wider mt-0.5 mb-1">Seguridad y Salud en el Trabajo</p>
                                    <div class="flex items-center gap-2">
                                        <div class="h-1.5 w-1.5 rounded-full bg-teal-400"></div>
                                        <p class="text-[8px] text-slate-100 uppercase tracking-[0.25em] font-medium opacity-90 font-mono-tech">Credencial de Integrante</p>
                                    </div>
                                </div>
-                               <!-- Logo Grande Impactante (LIMPIO) -->
+                               <!-- Logo Grande Impactante -->
                                <div class="relative bg-white/10 rounded-full p-1 backdrop-blur-sm">
-                                   <img src="https://assets.poap.xyz/7a0347ca-c7eb-4842-b5f5-b72c364b1fff.png" alt="Logo Movida SST" class="h-20 w-auto relative z-10 drop-shadow-lg">
+                                   <img id="credential-logo" src="" alt="Logo Movida SST" class="h-20 w-20 rounded-full object-cover relative z-10 drop-shadow-lg" crossorigin="anonymous">
                                </div>
                            </div>
                            
-                           <!-- Cuerpo Horizontal -->
                            <div class="flex-grow flex p-6 items-center relative z-10 gap-6">
-                               
-                               <!-- Columna Izquierda: Foto y STATUS -->
                                <div class="flex flex-col items-center shrink-0 w-32 relative">
-                                   <!-- Borde elegante para la foto -->
                                    <div class="relative p-1 rounded-xl bg-white border border-slate-200 shadow-md mb-3">
                                        <img id="member-photo" src="https://placehold.co/128x128/f1f5f9/94a3b8?text=Perfil" class="bg-slate-100 rounded-lg object-cover w-32 h-32" crossorigin="anonymous" onerror="this.onerror=null;this.src='https://placehold.co/128x128/f1f5f9/94a3b8?text=Perfil';">
                                    </div>
-                                   
-                                   <!-- STATUS VISIBLE AQUI -->
                                    <div id="member-status-container" class="w-full flex justify-center">
                                         <p id="member-status" class="text-[9px] font-mono-tech font-bold uppercase px-3 py-1 rounded-full border shadow-sm tracking-wider whitespace-nowrap bg-amber-50 text-amber-600 border-amber-200"></p>
                                    </div>
                                </div>
                                
-                               <!-- Columna Central: Datos -->
                                <div class="flex-grow flex flex-col justify-center min-w-0">
-                                    <h3 id="member-name" class="text-2xl font-bold leading-tight text-slate-900 mb-1 truncate">Nombre Apellido</h3>
+                                    <h3 id="member-name" class="text-2xl font-bold leading-tight text-slate-900 mb-1">Nombre Apellido</h3>
                                     <p class="text-xs uppercase tracking-widest font-bold text-teal-700 mb-5 border-l-2 border-teal-600 pl-2">Profesional de SST</p>
                                    
                                     <div class="grid grid-cols-1 gap-2">
-                                       <!-- DATO 1: DNI / CEDULA -->
                                        <div>
-                                           <p class="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5 font-mono-tech">DNI / Cédula</p>
-                                           <p id="member-dni-display" class="text-lg text-slate-700 font-bold font-mono-tech tracking-tight flex items-center gap-2 bg-slate-50 py-1 px-3 rounded border border-slate-200 w-fit">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
-                                                12.345.678
-                                           </p>
+                                            <p class="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5 font-mono-tech">DNI / Cédula</p>
+                                            <p id="member-dni-display" class="text-lg text-slate-700 font-bold font-mono-tech tracking-tight flex items-center gap-2 w-fit">
+                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                                                 12.345.678
+                                            </p>
                                        </div>
                                        
-                                       <!-- DATO 2: GRADO ACADÉMICO (NUEVO) -->
                                        <div class="mt-1">
                                             <p class="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5 font-mono-tech">Grado Académico</p>
-                                            <p id="member-degree" class="text-sm text-slate-600 font-semibold truncate flex items-center gap-1.5">
-                                                <span class="w-1.5 h-1.5 bg-teal-500 rounded-full"></span>
+                                            <p id="member-degree" class="text-sm text-slate-600 font-semibold flex items-center gap-1.5">
+                                                <span class="w-1.5 h-1.5 bg-teal-500 rounded-full flex-shrink-0"></span>
                                                 <span id="degree-text"></span>
                                             </p>
                                        </div>
 
-                                       <!-- DATO 3: PAÍS DE RESIDENCIA -->
                                        <div class="mt-1">
                                             <p class="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5 font-mono-tech">País de Residencia</p>
-                                            <p id="member-ubicacion" class="text-sm text-slate-600 font-semibold truncate flex items-center gap-1.5">
-                                                <span class="w-1.5 h-1.5 bg-slate-400 rounded-full"></span>
+                                            <p id="member-ubicacion" class="text-sm text-slate-600 font-semibold flex items-center gap-1.5">
+                                                <span class="w-1.5 h-1.5 bg-slate-400 rounded-full flex-shrink-0"></span>
                                                 <span id="location-text"></span>
                                             </p>
                                        </div>
-                                    </div>
+                                   </div>
                                </div>
                                
-                               <!-- Columna Derecha: QR y Código -->
                                <div class="flex flex-col items-center justify-end shrink-0 w-32 gap-3">
                                     <div class="text-center w-full">
                                        <p class="text-[7px] text-slate-400 uppercase font-bold tracking-widest mb-1 font-mono-tech">Código de Verificación</p>
@@ -270,8 +246,8 @@
                                </div>
                            </div>
                            
-                           <!-- Footer Modificado: Webs apiladas -->
-                           <div class="bg-slate-50 border-t border-slate-100 flex flex-col justify-center items-center py-2 text-[8px] text-slate-400 font-mono-tech uppercase tracking-widest shrink-0 leading-tight gap-0.5">
+                           <!-- Footer: Webs separadas una en cada esquina -->
+                           <div class="bg-slate-50 border-t border-slate-100 flex justify-between items-center py-3 px-8 text-[8px] text-slate-400 font-mono-tech uppercase tracking-widest shrink-0">
                                <span>www.movidasst.com</span>
                                <span class="text-teal-600/70">https://portal.movidasst.com</span>
                            </div>
@@ -285,7 +261,6 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
                            </div>
                            Actualizar foto de perfil
-                           <span class="text-xs font-mono-tech text-slate-400 ml-auto border border-slate-200 px-2 py-0.5 rounded bg-slate-50">MAX 5MB</span>
                        </label>
                        <input type="file" id="photo-upload" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100 cursor-pointer bg-white border border-slate-200 rounded-lg" accept="image/png, image/jpeg">
                        <p id="upload-status" class="text-center text-sm mt-2 font-medium h-4" aria-live="polite"></p>
@@ -333,7 +308,6 @@
         </div>
     </div>
 
-    <!-- BOTÓN VOLVER -->
     <a href="https://www.movidasst.com" title="Volver al Hub" style="position: fixed; bottom: 20px; right: 20px; background-color: #0f172a; color: #2dd4bf; padding: 10px 18px; border-radius: 12px; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12px; letter-spacing: 1px; border: 1px solid #14b8a6; box-shadow: 0 0 15px rgba(20, 184, 166, 0.2); z-index: 9999; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; backdrop-filter: blur(5px);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 0 25px rgba(20, 184, 166, 0.5)'; this.style.borderColor='#5eead4'; this.style.color='#ccfbf1';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 15px rgba(20, 184, 166, 0.2)'; this.style.borderColor='#14b8a6'; this.style.color='#2dd4bf';">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 12 16.5 4.21"></polyline><polyline points="7.5 19.79 12 12 16.5 19.79"></polyline><polyline points="3.29 12 12 12 20.71 12"></polyline></svg>
         <span>VOLVER</span>
@@ -376,9 +350,51 @@
                 cancelCropBtn: document.getElementById('cancel-crop-btn'),
                 credentialCard: document.getElementById('credential'),
                 qrcode: document.getElementById('qrcode'),
+                credentialLogo: document.getElementById('credential-logo'),
             };
 
             document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+            // =========================================================================
+            //  CONFIGURACIÓN DEL LOGO: ID DE DRIVE Y FUNCIÓN ÚNICA DE CARGA
+            // =========================================================================
+            const logoFileId = "13soVf12IgOke_IKWpSrgQ1lLZB-3gnB_";
+            
+            // Función robusta para cargar imágenes de drive (foto o logo)
+            // Se declara una sola vez para evitar errores de sintaxis
+            const getOptimizedImageUrl = (driveUrlOrId) => {
+                return new Promise(async (resolve) => {
+                    const placeholder = 'https://placehold.co/128x128/f1f5f9/94a3b8?text=Perfil';
+                    let fileId = driveUrlOrId;
+
+                    if (!driveUrlOrId) { resolve(placeholder); return; }
+
+                    // Si es una URL completa, extraemos el ID
+                    if (driveUrlOrId.includes('http')) {
+                        const match = driveUrlOrId.match(/id=([^&]+)/) || driveUrlOrId.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                        if (match) {
+                            fileId = match[1];
+                        } else {
+                            resolve(placeholder); 
+                            return;
+                        }
+                    }
+
+                    try {
+                        const imageUrl = `${googleAppScriptUrl}?action=getImage&fileId=${fileId}`;
+                        const response = await fetch(imageUrl, { method: 'GET', redirect: 'follow' });
+                        if (!response.ok) throw new Error('Network error');
+                        const data = await response.json();
+                        resolve(data.status === 'success' ? data.imageData : placeholder);
+                    } catch (e) { resolve(placeholder); }
+                });
+            };
+
+            // Cargar el logo al iniciar usando la función única
+            getOptimizedImageUrl(logoFileId).then(base64Logo => {
+                if(ui.credentialLogo) ui.credentialLogo.src = base64Logo;
+            });
+            // =========================================================================
 
             const manageButtonState = (button, isLoading) => {
                 const textElement = button.querySelector('.btn-text');
@@ -468,32 +484,109 @@
                         const member = data.data;
                         const active = member.status && member.status.toLowerCase() === 'activo';
                         
-                        const statusColor = active ? 'text-emerald-600' : 'text-amber-600';
-                        const borderColor = active ? 'border-emerald-200' : 'border-amber-200';
-                        const bgColor = active ? 'bg-emerald-50' : 'bg-amber-50';
-                        const icon = active 
-                            ? `<svg class="w-6 h-6 mr-2 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>`
-                            : `<svg class="w-6 h-6 mr-2 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>`;
+                        // Helper para encontrar datos aunque el nombre de la variable cambie (ej: dni vs cedula)
+                        const getMemberField = (obj, possibleKeys) => {
+                            const normalize = (str) => {
+                                if (!str) return '';
+                                return String(str).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "");
+                            };
+                            
+                            // 1. Búsqueda exacta por claves priorizadas
+                            for (const key of possibleKeys) {
+                                const normalizedTarget = normalize(key);
+                                const foundKey = Object.keys(obj).find(k => normalize(k) === normalizedTarget);
+                                if (foundKey && obj[foundKey] && obj[foundKey] !== 'undefined') {
+                                    return obj[foundKey];
+                                }
+                            }
+
+                            // 2. Búsqueda "contiene" (Fallback)
+                            for (const key of possibleKeys) {
+                                if (key.length < 4) continue; 
+                                const normalizedTarget = normalize(key);
+                                const foundKey = Object.keys(obj).find(k => normalize(k).includes(normalizedTarget));
+                                if (foundKey && obj[foundKey] && obj[foundKey] !== 'undefined') {
+                                    return obj[foundKey];
+                                }
+                            }
+
+                            return 'No registrado';
+                        };
+
+                        // Búsqueda inteligente de datos para evitar "undefined"
+                        const nombre = getMemberField(member, ['nombre', 'nombres', 'nombre y apellido', 'nombres y apellidos', 'nombre completo']);
+                        const pais = getMemberField(member, ['pais', 'país', 'ubicacion', 'ubicación', 'país de residencia', 'pais de residencia', 'nacionalidad']);
+                        const estado = getMemberField(member, ['estado', 'estado de venezuela', 'provincia', 'departamento']);
+                        const status = member.status || 'DESCONOCIDO';
+
+                        // Combinar Estado y País para una presentación más limpia
+                        let ubicacionDisplay = 'No registrado';
+                        if (pais !== 'No registrado') {
+                            ubicacionDisplay = (estado !== 'No registrado') ? `${estado}, ${pais}` : pais;
+                        } else if (estado !== 'No registrado') {
+                            ubicacionDisplay = estado;
+                        }
 
                         ui.verificationResultMessage.innerHTML = `
-                            <div class="${bgColor} border ${borderColor} rounded-xl p-4 w-full text-left relative overflow-hidden shadow-sm">
-                                <h3 class="text-md font-bold ${statusColor} flex items-center mb-3 font-mono-tech">${icon} INTEGRANTE VERIFICADO</h3>
-                                <div class="text-sm text-slate-600 space-y-2 pl-2 font-mono-tech border-l border-slate-300 ml-1">
-                                    <div class="flex justify-between"><span class="text-slate-400 text-xs">NOMBRE</span><span class="font-bold">${member.nombre}</span></div>
-                                    <div class="flex justify-between"><span class="text-slate-400 text-xs">ESTADO</span><span class="font-bold ${statusColor}">${member.status}</span></div>
+                            <div class="bg-white border-2 border-slate-200 rounded-2xl p-6 w-full text-left shadow-xl relative overflow-hidden font-sans">
+                                <!-- Cinta decorativa superior -->
+                                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-teal-600 to-slate-800"></div>
+                                
+                                <div class="text-center mb-6 mt-2">
+                                    <div class="inline-flex items-center justify-center p-2 bg-teal-50 rounded-full mb-3 text-teal-600 border border-teal-100">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+                                    </div>
+                                    <h3 class="text-sm font-black text-slate-800 uppercase tracking-wide leading-tight">
+                                        Integrante de<br>
+                                        <span class="text-teal-700 text-base">La Movida de SST DAO Network</span>
+                                    </h3>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">Verificación Oficial</p>
+                                </div>
+
+                                <!-- Insignia de Estatus Grande -->
+                                <div class="flex justify-center mb-8">
+                                    <span class="${active ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'} px-6 py-2 rounded-full text-sm font-black uppercase tracking-widest border-2 shadow-sm flex items-center gap-2 transform scale-110">
+                                        ${active ? '<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>' : '<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>'}
+                                        ${status}
+                                    </span>
+                                </div>
+
+                                <!-- Grid de Datos Limpios -->
+                                <div class="space-y-4 font-mono-tech text-sm px-2">
+                                    <div class="flex flex-col border-b border-slate-100 pb-2">
+                                        <span class="text-[9px] uppercase tracking-widest text-slate-400 font-bold mb-1">Nombre Completo</span>
+                                        <span class="font-bold text-slate-800 text-base">${nombre}</span>
+                                    </div>
+                                    
+                                    <div class="flex flex-col border-b border-slate-100 pb-2">
+                                        <span class="text-[9px] uppercase tracking-widest text-slate-400 font-bold mb-1">Ubicación</span>
+                                        <span class="font-semibold text-slate-700 truncate" title="${ubicacionDisplay}">${ubicacionDisplay}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Footer Validado -->
+                                <div class="mt-8 pt-4 border-t border-slate-100 text-center flex flex-col items-center gap-1 text-teal-600/80">
+                                    <div class="flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span class="text-[10px] font-bold uppercase tracking-widest">Código Válido</span>
+                                    </div>
+                                    <p class="text-[9px] text-slate-300 font-mono-tech mt-1">ID: ${verificationCode}</p>
                                 </div>
                             </div>`;
                     } else {
                         ui.verificationResultMessage.innerHTML = `
-                            <div class="bg-rose-50 border border-rose-200 rounded-xl p-4 w-full text-left">
-                                <h3 class="text-md font-bold text-rose-600 flex items-center mb-1">
-                                    <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg> ERROR
-                                </h3>
-                                <p class="text-xs text-rose-500 pl-7 font-mono-tech">${data.message}</p>
+                            <div class="bg-rose-50 border-2 border-rose-100 rounded-2xl p-6 w-full text-center shadow-lg">
+                                <div class="inline-flex items-center justify-center p-3 bg-rose-100 rounded-full mb-3 text-rose-500">
+                                    <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+                                </div>
+                                <h3 class="text-lg font-black text-rose-600 uppercase mb-2">Código No Válido</h3>
+                                <p class="text-xs text-rose-400 font-mono-tech px-4">${data.message || 'No se encontró ningún miembro con este código.'}</p>
                             </div>`;
                     }
                 } catch (error) {
-                    ui.verificationResultMessage.innerHTML = `<p class="text-rose-600">Error de conexión.</p>`;
+                    ui.verificationResultMessage.innerHTML = `<p class="text-rose-600 text-center font-bold text-sm">Error de conexión. Intente nuevamente.</p>`;
                 } finally {
                     manageButtonState(ui.verifyButton, false);
                 }
@@ -548,7 +641,6 @@
                             } else { throw new Error(data.message); }
                         })
                         .catch(error => {
-                            // Manejo de error CORS silencioso para UX
                             if (error instanceof TypeError && error.message === 'Failed to fetch') {
                                 ui.uploadStatus.className = 'text-emerald-600 text-center text-sm mt-2 font-medium h-4';
                                 ui.uploadStatus.textContent = 'Procesando...';
@@ -583,21 +675,6 @@
                     ui.photoInput.value = '';
                 }, 300);
             };
-            
-            const getOptimizedImageUrl = (driveUrl) => {
-                return new Promise(async (resolve) => {
-                    const placeholder = 'https://placehold.co/128x128/f1f5f9/94a3b8?text=Perfil';
-                    if (!driveUrl || !driveUrl.includes('id=')) { resolve(placeholder); return; }
-                    try {
-                        const fileId = driveUrl.match(/id=([^&]+)/)[1];
-                        const imageUrl = `${googleAppScriptUrl}?action=getImage&fileId=${fileId}`;
-                        const response = await fetch(imageUrl, { method: 'GET', redirect: 'follow' });
-                        if (!response.ok) throw new Error('Network error');
-                        const data = await response.json();
-                        resolve(data.status === 'success' ? data.imageData : placeholder);
-                    } catch (e) { resolve(placeholder); }
-                });
-            };
 
             const displayResults = async (memberData) => {
                 ui.memberName.textContent = memberData.nombre || "N/A";
@@ -608,9 +685,7 @@
 
                 ui.memberVerificationCode.textContent = memberData.codigoVerificacion || "N/A";
                 
-                // Mostrar el Status real (ej: ADMINISTRADOR) en el badge inferior
                 ui.memberStatus.textContent = memberData.status || "N/A";
-                // Lógica de colores si es necesario, pero manteniendo la estructura
                 
                 ui.qrcode.innerHTML = '';
                 new QRCode(ui.qrcode, {
@@ -632,26 +707,44 @@
             const downloadCredential = () => {
                 manageButtonState(ui.downloadButton, true);
                 ui.downloadStatus.textContent = '';
-                document.fonts.ready.then(() => {
-                    html2canvas(document.getElementById('credential'), { 
-                        scale: 3, 
-                        useCORS: true,
-                        allowTaint: true,
-                        backgroundColor: '#ffffff',
-                        width: 600,
-                        height: 380,
-                        windowWidth: 1200
-                    }).then(canvas => {
-                        const link = document.createElement('a');
-                        link.download = `credencial-dao-${currentMemberDNI}.png`;
-                        link.href = canvas.toDataURL("image/png");
-                        link.click();
-                    }).catch(err => {
-                        ui.downloadStatus.textContent = "Error al generar imagen.";
-                    }).finally(() => {
-                        manageButtonState(ui.downloadButton, false);
+                
+                setTimeout(() => {
+                    document.fonts.ready.then(() => {
+                        const credentialElement = document.getElementById('credential');
+
+                        html2canvas(credentialElement, { 
+                            scale: 2, 
+                            useCORS: true,
+                            width: 600,
+                            height: 380,
+                            windowWidth: 1600, 
+                            windowHeight: 1000,
+                            scrollX: 0,
+                            scrollY: 0,
+                            onclone: (clonedDoc) => {
+                                const clonedElement = clonedDoc.getElementById('credential');
+                                clonedElement.style.transform = 'none';
+                                clonedElement.style.margin = '0 auto';
+                                clonedElement.style.boxShadow = 'none'; 
+                                const allTexts = clonedElement.querySelectorAll('*');
+                                allTexts.forEach(el => {
+                                    el.style.textRendering = 'geometricPrecision';
+                                });
+                            }
+                        }).then(canvas => {
+                            const link = document.createElement('a');
+                            link.download = `credencial-dao-${currentMemberDNI || 'integrante'}.png`;
+                            link.href = canvas.toDataURL("image/png");
+                            link.click();
+                            ui.downloadStatus.textContent = "Descarga iniciada.";
+                        }).catch(err => {
+                            console.error(err);
+                            ui.downloadStatus.textContent = "Error al generar imagen.";
+                        }).finally(() => {
+                            manageButtonState(ui.downloadButton, false);
+                        });
                     });
-                });
+                }, 100); 
             };
             
             const joinWhatsAppChannel = () => window.open("https://whatsapp.com/channel/0029Va0mlH5Jf05mrcCz8r3e", '_blank');

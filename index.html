@@ -8,7 +8,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -100,9 +99,9 @@
                     <p class="text-sm md:text-base text-slate-500 mt-2 font-medium tracking-wide">La Movida de SST DAO Network</p>
                 </header>
 
-                <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16 items-start">
-                    <!-- Columna Izquierda: Acceso -->
-                    <div class="inner-card p-6 lg:p-8 h-full flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300 group bg-slate-50">
+                <div class="max-w-md mx-auto w-full">
+                    <!-- Columna Única: Acceso -->
+                    <div class="inner-card p-6 lg:p-8 shadow-sm hover:shadow-md transition-all duration-300 group bg-slate-50">
                         <div>
                             <div class="text-center mb-6">
                                 <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-teal-100 text-teal-600 mb-3 border border-teal-200">
@@ -137,153 +136,125 @@
                             </a>
                         </div>
                     </div>
-
-                    <!-- Columna Derecha: Verificación -->
-                    <div class="mt-8 lg:mt-0 inner-card p-6 lg:p-8 h-full shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group bg-slate-50">
-                         <div class="text-center mb-6">
-                            <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-slate-200 text-slate-600 mb-3 border border-slate-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
-                            </div>
-                            <h2 class="text-xl font-bold text-slate-800">Verificar Integrante</h2>
-                            <p class="text-sm text-slate-500">Valida autenticidad en la Blockchain</p>
-                        </div>
-
-                        <div class="flex-grow flex flex-col justify-center">
-                            <label for="verification-code" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 text-center">Código de Verificación</label>
-                            <input type="text" id="verification-code" placeholder="Ej: 3GPHQ" class="custom-input w-full p-4 rounded-xl text-center tracking-[0.3em] font-mono font-bold text-lg uppercase placeholder:normal-case placeholder:tracking-normal placeholder:font-sans placeholder:text-slate-400 text-slate-800">
-                            
-                            <button id="verify-button" class="mt-6 w-full bg-slate-800 text-white font-bold py-3.5 px-6 rounded-xl border border-slate-700 hover:bg-slate-700 focus:ring-4 focus:ring-slate-300 transition-all duration-200 shadow-lg active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
-                                <span id="verify-button-text" class="btn-text transition-opacity">Validar Código</span>
-                            </button>
-                            <div id="verification-result-message" class="text-center text-sm mt-6 font-medium" aria-live="polite"></div>
-                        </div>
-                        
-                         <div class="mt-auto pt-6 border-t border-slate-200 text-center opacity-0 pointer-events-none">
-                              <p class="text-xs text-slate-400 mb-3 font-medium uppercase tracking-wider">&nbsp;</p>
-                             <div class="py-3 px-4">&nbsp;</div>
-                          </div>
-                    </div>
                 </div>
 
             </section>
             
             <section id="result-view" class="view hidden-view w-full">
-               <div class="w-full flex flex-col items-center">
-                   <h2 class="text-2xl font-bold text-center mb-6 text-slate-800 tracking-tight">Credencial de Integrante</h2>
-                   
-                   <p class="text-[10px] uppercase tracking-widest text-slate-400 mb-4 md:hidden">⟵ Desliza para ver completa ⟶</p>
-                   
-                   <div class="credential-scroll-container">
-                       <div id="credential" class="security-pattern bg-white rounded-2xl shadow-xl overflow-hidden font-sans text-slate-800 border border-slate-200 flex flex-col relative">
-                           
-                           <img src="https://assets.poap.xyz/600dd07c-7b41-43f1-958e-39d5276b090e.png" alt="Sello de Verificación" class="seal-credential">
-                           
-                           <div class="bg-gradient-to-r from-teal-700 to-slate-800 p-5 h-24 flex justify-between items-center relative z-10 shrink-0">
-                               <div class="pl-2 flex flex-col justify-center h-full">
-                                   <h2 class="text-lg font-bold text-white tracking-wide leading-tight drop-shadow-sm">La Movida de SST DAO Network</h2>
-                                   <p class="text-[9px] text-teal-300 font-bold uppercase tracking-wider mt-0.5 mb-1">Seguridad y Salud en el Trabajo</p>
-                                   <div class="flex items-center gap-2">
-                                       <div class="h-1.5 w-1.5 rounded-full bg-teal-400"></div>
-                                       <p class="text-[8px] text-slate-100 uppercase tracking-[0.25em] font-medium opacity-90 font-mono-tech">Credencial de Integrante</p>
-                                   </div>
-                               </div>
-                               <!-- Logo Grande Impactante -->
-                               <div class="relative bg-white/10 rounded-full p-1 backdrop-blur-sm">
-                                   <img id="credential-logo" src="" alt="Logo Movida SST" class="h-20 w-20 rounded-full object-cover relative z-10 drop-shadow-lg" crossorigin="anonymous">
-                               </div>
-                           </div>
-                           
-                           <div class="flex-grow flex p-6 items-center relative z-10 gap-6">
-                               <div class="flex flex-col items-center shrink-0 w-32 relative">
-                                   <div class="relative p-1 rounded-xl bg-white border border-slate-200 shadow-md mb-3">
-                                       <img id="member-photo" src="https://placehold.co/128x128/f1f5f9/94a3b8?text=Perfil" class="bg-slate-100 rounded-lg object-cover w-32 h-32" crossorigin="anonymous" onerror="this.onerror=null;this.src='https://placehold.co/128x128/f1f5f9/94a3b8?text=Perfil';">
-                                   </div>
-                                   <div id="member-status-container" class="w-full flex justify-center">
-                                        <p id="member-status" class="text-[9px] font-mono-tech font-bold uppercase px-3 py-1 rounded-full border shadow-sm tracking-wider whitespace-nowrap bg-amber-50 text-amber-600 border-amber-200"></p>
-                                   </div>
-                               </div>
-                               
-                               <div class="flex-grow flex flex-col justify-center min-w-0">
-                                    <h3 id="member-name" class="text-2xl font-bold leading-tight text-slate-900 mb-1">Nombre Apellido</h3>
-                                    <p class="text-xs uppercase tracking-widest font-bold text-teal-700 mb-5 border-l-2 border-teal-600 pl-2">Profesional de SST</p>
-                                   
-                                    <div class="grid grid-cols-1 gap-2">
-                                       <div>
-                                            <p class="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5 font-mono-tech">DNI / Cédula</p>
-                                            <p id="member-dni-display" class="text-lg text-slate-700 font-bold font-mono-tech tracking-tight flex items-center gap-2 w-fit">
-                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
-                                                 12.345.678
-                                            </p>
-                                       </div>
-                                       
-                                       <div class="mt-1">
-                                            <p class="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5 font-mono-tech">Grado Académico</p>
-                                            <p id="member-degree" class="text-sm text-slate-600 font-semibold flex items-center gap-1.5">
-                                                <span class="w-1.5 h-1.5 bg-teal-500 rounded-full flex-shrink-0"></span>
-                                                <span id="degree-text"></span>
-                                            </p>
-                                       </div>
-
-                                       <div class="mt-1">
-                                            <p class="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5 font-mono-tech">País de Residencia</p>
-                                            <p id="member-ubicacion" class="text-sm text-slate-600 font-semibold flex items-center gap-1.5">
-                                                <span class="w-1.5 h-1.5 bg-slate-400 rounded-full flex-shrink-0"></span>
-                                                <span id="location-text"></span>
-                                            </p>
-                                       </div>
-                                   </div>
-                               </div>
-                               
-                               <div class="flex flex-col items-center justify-end shrink-0 w-32 gap-3">
-                                    <div class="text-center w-full">
-                                       <p class="text-[7px] text-slate-400 uppercase font-bold tracking-widest mb-1 font-mono-tech">Código de Verificación</p>
-                                       <p id="member-verification-code" class="text-sm font-mono-tech font-bold text-slate-800 tracking-wider border-b border-slate-200 pb-0.5">----</p>
+                <div class="w-full flex flex-col items-center">
+                    <h2 class="text-2xl font-bold text-center mb-6 text-slate-800 tracking-tight">Credencial de Integrante</h2>
+                    
+                    <p class="text-[10px] uppercase tracking-widest text-slate-400 mb-4 md:hidden">⟵ Desliza para ver completa ⟶</p>
+                    
+                    <div class="credential-scroll-container">
+                        <div id="credential" class="security-pattern bg-white rounded-2xl shadow-xl overflow-hidden font-sans text-slate-800 border border-slate-200 flex flex-col relative">
+                            
+                            <div class="bg-gradient-to-r from-teal-700 to-slate-800 p-5 h-24 flex justify-between items-center relative z-10 shrink-0">
+                                <div class="pl-2 flex flex-col justify-center h-full">
+                                    <h2 class="text-lg font-bold text-white tracking-wide leading-tight drop-shadow-sm">La Movida de SST DAO Network</h2>
+                                    <p class="text-[9px] text-teal-300 font-bold uppercase tracking-wider mt-0.5 mb-1">Seguridad y Salud en el Trabajo</p>
+                                    <div class="flex items-center gap-2">
+                                        <div class="h-1.5 w-1.5 rounded-full bg-teal-400"></div>
+                                        <p class="text-[8px] text-slate-100 uppercase tracking-[0.25em] font-medium opacity-90 font-mono-tech">Credencial de Integrante</p>
                                     </div>
+                                </div>
+                                <!-- Logo Grande Impactante -->
+                                <div class="relative bg-white/10 rounded-full p-1 backdrop-blur-sm">
+                                    <img id="credential-logo" src="" alt="Logo Movida SST" class="h-20 w-20 rounded-full object-cover relative z-10 drop-shadow-lg" crossorigin="anonymous">
+                                </div>
+                            </div>
+                            
+                            <div class="flex-grow flex p-6 items-center relative z-10 gap-6">
+                                <div class="flex flex-col items-center shrink-0 w-32 relative">
+                                    <div class="relative p-1 rounded-xl bg-white border border-slate-200 shadow-md mb-3">
+                                        <img id="member-photo" src="https://placehold.co/128x128/f1f5f9/94a3b8?text=Perfil" class="bg-slate-100 rounded-lg object-cover w-32 h-32" crossorigin="anonymous" onerror="this.onerror=null;this.src='https://placehold.co/128x128/f1f5f9/94a3b8?text=Perfil';">
+                                    </div>
+                                    <div id="member-status-container" class="w-full flex justify-center">
+                                         <p id="member-status" class="text-[9px] font-mono-tech font-bold uppercase px-3 py-1 rounded-full border shadow-sm tracking-wider whitespace-nowrap bg-amber-50 text-amber-600 border-amber-200"></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex-grow flex flex-col justify-center min-w-0">
+                                     <h3 id="member-name" class="text-2xl font-bold leading-tight text-slate-900 mb-1">Nombre Apellido</h3>
+                                     <p class="text-xs uppercase tracking-widest font-bold text-teal-700 mb-5 border-l-2 border-teal-600 pl-2">Profesional de SST</p>
+                                    
+                                     <div class="grid grid-cols-1 gap-2">
+                                        <div>
+                                             <p class="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5 font-mono-tech">DNI / Cédula</p>
+                                             <p id="member-dni-display" class="text-lg text-slate-700 font-bold font-mono-tech tracking-tight flex items-center gap-2 w-fit">
+                                                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                                                  12.345.678
+                                             </p>
+                                        </div>
+                                        
+                                        <div class="mt-1">
+                                             <p class="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5 font-mono-tech">Grado Académico</p>
+                                             <p id="member-degree" class="text-sm text-slate-600 font-semibold flex items-center gap-1.5">
+                                                 <span class="w-1.5 h-1.5 bg-teal-500 rounded-full flex-shrink-0"></span>
+                                                 <span id="degree-text"></span>
+                                             </p>
+                                        </div>
 
-                                    <div id="qrcode-container" class="p-1.5 bg-white border border-slate-100 rounded-lg shadow-sm">
-                                      <div id="qrcode"></div>
-                                   </div>
-                               </div>
-                           </div>
-                           
-                           <!-- Footer: Webs separadas una en cada esquina -->
-                           <div class="bg-slate-50 border-t border-slate-100 flex justify-between items-center py-3 px-8 text-[8px] text-slate-400 font-mono-tech uppercase tracking-widest shrink-0">
-                               <span>www.movidasst.com</span>
-                               <span class="text-teal-600/70">https://portal.movidasst.com</span>
-                           </div>
-                       </div>
-                   </div>
+                                        <div class="mt-1">
+                                             <p class="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5 font-mono-tech">País de Residencia</p>
+                                             <p id="member-ubicacion" class="text-sm text-slate-600 font-semibold flex items-center gap-1.5">
+                                                 <span class="w-1.5 h-1.5 bg-slate-400 rounded-full flex-shrink-0"></span>
+                                                 <span id="location-text"></span>
+                                             </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex flex-col items-center justify-end shrink-0 w-32 gap-3">
+                                     <div class="text-center w-full">
+                                        <p class="text-[7px] text-slate-400 uppercase font-bold tracking-widest mb-1 font-mono-tech">Código de Verificación</p>
+                                        <p id="member-verification-code" class="text-sm font-mono-tech font-bold text-slate-800 tracking-wider border-b border-slate-200 pb-0.5">----</p>
+                                     </div>
 
-                   <!-- Controles de Usuario -->
-                   <div class="mt-8 p-6 bg-white rounded-xl border border-slate-200 w-full shadow-sm max-w-lg">
-                       <label for="photo-upload" class="block text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
-                           <div class="bg-teal-50 p-1.5 rounded-lg border border-teal-100 text-teal-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
-                           </div>
-                           Actualizar foto de perfil
-                       </label>
-                       <input type="file" id="photo-upload" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100 cursor-pointer bg-white border border-slate-200 rounded-lg" accept="image/png, image/jpeg">
-                       <p id="upload-status" class="text-center text-sm mt-2 font-medium h-4" aria-live="polite"></p>
-                   </div>
+                                     <div id="qrcode-container" class="p-1.5 bg-white border border-slate-100 rounded-lg shadow-sm">
+                                       <div id="qrcode"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Footer: Webs separadas una en cada esquina -->
+                            <div class="bg-slate-50 border-t border-slate-100 flex justify-between items-center py-3 px-8 text-[8px] text-slate-400 font-mono-tech uppercase tracking-widest shrink-0">
+                                <span>www.movidasst.com</span>
+                                <span class="text-teal-600/70">https://portal.movidasst.com</span>
+                            </div>
+                        </div>
+                    </div>
 
-                   <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
-                       <button id="download-credential" class="w-full bg-blue-600 text-white font-bold py-3.5 px-4 rounded-xl hover:bg-blue-700 transition-all duration-200 active:scale-[0.98] shadow-md shadow-blue-600/20 flex items-center justify-center gap-2 disabled:opacity-70 relative">
-                           <span class="btn-text flex items-center justify-center gap-2 transition-opacity">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                               <span>Descargar Credencial</span>
-                           </span>
-                       </button>
-                       <button id="join-whatsapp-button" class="w-full bg-emerald-500 text-white font-bold py-3.5 px-4 rounded-xl hover:bg-emerald-600 transition-all duration-200 active:scale-[0.98] shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.89 7.89 0 0 0 13.6 2.326zM7.994 14.521a6.57 6.57 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
+                    <!-- Controles de Usuario -->
+                    <div class="mt-8 p-6 bg-white rounded-xl border border-slate-200 w-full shadow-sm max-w-lg">
+                        <label for="photo-upload" class="block text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
+                            <div class="bg-teal-50 p-1.5 rounded-lg border border-teal-100 text-teal-600">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+                            </div>
+                            Actualizar foto de perfil
+                        </label>
+                        <input type="file" id="photo-upload" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100 cursor-pointer bg-white border border-slate-200 rounded-lg" accept="image/png, image/jpeg">
+                        <p id="upload-status" class="text-center text-sm mt-2 font-medium h-4" aria-live="polite"></p>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
+                        <button id="download-credential" class="w-full bg-blue-600 text-white font-bold py-3.5 px-4 rounded-xl hover:bg-blue-700 transition-all duration-200 active:scale-[0.98] shadow-md shadow-blue-600/20 flex items-center justify-center gap-2 disabled:opacity-70 relative">
+                            <span class="btn-text flex items-center justify-center gap-2 transition-opacity">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                                <span>Descargar Credencial</span>
+                            </span>
+                        </button>
+                        <button id="join-whatsapp-button" class="w-full bg-emerald-500 text-white font-bold py-3.5 px-4 rounded-xl hover:bg-emerald-600 transition-all duration-200 active:scale-[0.98] shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.89 7.89 0 0 0 13.6 2.326zM7.994 14.521a6.57 6.57 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
                             <span>Unirse al Canal</span>
-                       </button>
-                   </div>
-                   <p id="download-status" class="text-center text-sm font-medium h-4 mt-2 text-slate-500" aria-live="polite"></p>
-                   
-                   <button id="reset-button" class="mt-4 text-rose-500 font-semibold py-2 px-4 rounded-lg hover:bg-rose-50 transition-all duration-200 text-sm font-mono-tech uppercase tracking-wide">
-                       &lt; Cerrar Sesión / Volver &gt;
-                   </button>
-               </div>
+                        </button>
+                    </div>
+                    <p id="download-status" class="text-center text-sm font-medium h-4 mt-2 text-slate-500" aria-live="polite"></p>
+                    
+                    <button id="reset-button" class="mt-4 text-rose-500 font-semibold py-2 px-4 rounded-lg hover:bg-rose-50 transition-all duration-200 text-sm font-mono-tech uppercase tracking-wide">
+                        &lt; Cerrar Sesión / Volver &gt;
+                    </button>
+                </div>
             </section>
         </div>
         <footer class="text-center mt-8 text-slate-400 text-xs space-y-1 font-medium font-mono-tech">
@@ -316,7 +287,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const googleAppScriptUrl = "https://script.google.com/macros/s/AKfycbx6Ib35ReqBbITpKqNJdOI_U53sDPmKJ1FacqkKK4hmExnMA1frWjB3oTuBrba6nrVdFw/exec";
-            const sealImageUrl = "https://assets.poap.xyz/600dd07c-7b41-43f1-958e-39d5276b090e.png";
             let currentMemberDNI = null;
             let cropper = null;
 
@@ -327,9 +297,6 @@
                 codeInput: document.getElementById('member-code'),
                 errorMessage: document.getElementById('error-message'),
                 searchButton: document.getElementById('search-button'),
-                verificationCodeInput: document.getElementById('verification-code'),
-                verifyButton: document.getElementById('verify-button'),
-                verificationResultMessage: document.getElementById('verification-result-message'),
                 uploadButton: document.getElementById('upload-button'),
                 uploadStatus: document.getElementById('upload-status'),
                 photoInput: document.getElementById('photo-upload'),
@@ -360,8 +327,6 @@
             // =========================================================================
             const logoFileId = "13soVf12IgOke_IKWpSrgQ1lLZB-3gnB_";
             
-            // Función robusta para cargar imágenes de drive (foto o logo)
-            // Se declara una sola vez para evitar errores de sintaxis
             const getOptimizedImageUrl = (driveUrlOrId) => {
                 return new Promise(async (resolve) => {
                     const placeholder = 'https://placehold.co/128x128/f1f5f9/94a3b8?text=Perfil';
@@ -369,7 +334,6 @@
 
                     if (!driveUrlOrId) { resolve(placeholder); return; }
 
-                    // Si es una URL completa, extraemos el ID
                     if (driveUrlOrId.includes('http')) {
                         const match = driveUrlOrId.match(/id=([^&]+)/) || driveUrlOrId.match(/\/d\/([a-zA-Z0-9_-]+)/);
                         if (match) {
@@ -390,11 +354,9 @@
                 });
             };
 
-            // Cargar el logo al iniciar usando la función única
             getOptimizedImageUrl(logoFileId).then(base64Logo => {
                 if(ui.credentialLogo) ui.credentialLogo.src = base64Logo;
             });
-            // =========================================================================
 
             const manageButtonState = (button, isLoading) => {
                 const textElement = button.querySelector('.btn-text');
@@ -465,133 +427,6 @@
                 }
             };
             
-            const verifyMemberByCode = async () => {
-                const verificationCode = ui.verificationCodeInput.value.trim().toUpperCase();
-                ui.verificationCodeInput.value = verificationCode;
-                ui.verificationResultMessage.innerHTML = '';
-                
-                if (!verificationCode) { ui.verificationResultMessage.innerHTML = `<p class="text-amber-600">Introduce un código.</p>`; return; }
-
-                manageButtonState(ui.verifyButton, true);
-                const url = `${googleAppScriptUrl}?action=verify&verificationCode=${encodeURIComponent(verificationCode)}`;
-                
-                try {
-                    const response = await fetch(url, { method: 'GET' });
-                    if (!response.ok) throw new Error(`HTTP error!`);
-                    const data = await response.json();
-
-                    if (data.status === 'success') {
-                        const member = data.data;
-                        const active = member.status && member.status.toLowerCase() === 'activo';
-                        
-                        // Helper para encontrar datos aunque el nombre de la variable cambie (ej: dni vs cedula)
-                        const getMemberField = (obj, possibleKeys) => {
-                            const normalize = (str) => {
-                                if (!str) return '';
-                                return String(str).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "");
-                            };
-                            
-                            // 1. Búsqueda exacta por claves priorizadas
-                            for (const key of possibleKeys) {
-                                const normalizedTarget = normalize(key);
-                                const foundKey = Object.keys(obj).find(k => normalize(k) === normalizedTarget);
-                                if (foundKey && obj[foundKey] && obj[foundKey] !== 'undefined') {
-                                    return obj[foundKey];
-                                }
-                            }
-
-                            // 2. Búsqueda "contiene" (Fallback)
-                            for (const key of possibleKeys) {
-                                if (key.length < 4) continue; 
-                                const normalizedTarget = normalize(key);
-                                const foundKey = Object.keys(obj).find(k => normalize(k).includes(normalizedTarget));
-                                if (foundKey && obj[foundKey] && obj[foundKey] !== 'undefined') {
-                                    return obj[foundKey];
-                                }
-                            }
-
-                            return 'No registrado';
-                        };
-
-                        // Búsqueda inteligente de datos para evitar "undefined"
-                        const nombre = getMemberField(member, ['nombre', 'nombres', 'nombre y apellido', 'nombres y apellidos', 'nombre completo']);
-                        const pais = getMemberField(member, ['pais', 'país', 'ubicacion', 'ubicación', 'país de residencia', 'pais de residencia', 'nacionalidad']);
-                        const estado = getMemberField(member, ['estado', 'estado de venezuela', 'provincia', 'departamento']);
-                        const status = member.status || 'DESCONOCIDO';
-
-                        // Combinar Estado y País para una presentación más limpia
-                        let ubicacionDisplay = 'No registrado';
-                        if (pais !== 'No registrado') {
-                            ubicacionDisplay = (estado !== 'No registrado') ? `${estado}, ${pais}` : pais;
-                        } else if (estado !== 'No registrado') {
-                            ubicacionDisplay = estado;
-                        }
-
-                        ui.verificationResultMessage.innerHTML = `
-                            <div class="bg-white border-2 border-slate-200 rounded-2xl p-6 w-full text-left shadow-xl relative overflow-hidden font-sans">
-                                <!-- Cinta decorativa superior -->
-                                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-teal-600 to-slate-800"></div>
-                                
-                                <div class="text-center mb-6 mt-2">
-                                    <div class="inline-flex items-center justify-center p-2 bg-teal-50 rounded-full mb-3 text-teal-600 border border-teal-100">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
-                                    </div>
-                                    <h3 class="text-sm font-black text-slate-800 uppercase tracking-wide leading-tight">
-                                        Integrante de<br>
-                                        <span class="text-teal-700 text-base">La Movida de SST DAO Network</span>
-                                    </h3>
-                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">Verificación Oficial</p>
-                                </div>
-
-                                <!-- Insignia de Estatus Grande -->
-                                <div class="flex justify-center mb-8">
-                                    <span class="${active ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'} px-6 py-2 rounded-full text-sm font-black uppercase tracking-widest border-2 shadow-sm flex items-center gap-2 transform scale-110">
-                                        ${active ? '<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>' : '<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>'}
-                                        ${status}
-                                    </span>
-                                </div>
-
-                                <!-- Grid de Datos Limpios -->
-                                <div class="space-y-4 font-mono-tech text-sm px-2">
-                                    <div class="flex flex-col border-b border-slate-100 pb-2">
-                                        <span class="text-[9px] uppercase tracking-widest text-slate-400 font-bold mb-1">Nombre Completo</span>
-                                        <span class="font-bold text-slate-800 text-base">${nombre}</span>
-                                    </div>
-                                    
-                                    <div class="flex flex-col border-b border-slate-100 pb-2">
-                                        <span class="text-[9px] uppercase tracking-widest text-slate-400 font-bold mb-1">Ubicación</span>
-                                        <span class="font-semibold text-slate-700 truncate" title="${ubicacionDisplay}">${ubicacionDisplay}</span>
-                                    </div>
-                                </div>
-
-                                <!-- Footer Validado -->
-                                <div class="mt-8 pt-4 border-t border-slate-100 text-center flex flex-col items-center gap-1 text-teal-600/80">
-                                    <div class="flex items-center gap-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                        </svg>
-                                        <span class="text-[10px] font-bold uppercase tracking-widest">Código Válido</span>
-                                    </div>
-                                    <p class="text-[9px] text-slate-300 font-mono-tech mt-1">ID: ${verificationCode}</p>
-                                </div>
-                            </div>`;
-                    } else {
-                        ui.verificationResultMessage.innerHTML = `
-                            <div class="bg-rose-50 border-2 border-rose-100 rounded-2xl p-6 w-full text-center shadow-lg">
-                                <div class="inline-flex items-center justify-center p-3 bg-rose-100 rounded-full mb-3 text-rose-500">
-                                    <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
-                                </div>
-                                <h3 class="text-lg font-black text-rose-600 uppercase mb-2">Código No Válido</h3>
-                                <p class="text-xs text-rose-400 font-mono-tech px-4">${data.message || 'No se encontró ningún miembro con este código.'}</p>
-                            </div>`;
-                    }
-                } catch (error) {
-                    ui.verificationResultMessage.innerHTML = `<p class="text-rose-600 text-center font-bold text-sm">Error de conexión. Intente nuevamente.</p>`;
-                } finally {
-                    manageButtonState(ui.verifyButton, false);
-                }
-            };
-
             const handlePhotoSelection = (event) => {
                 const file = event.target.files[0];
                 if (!file) return;
@@ -687,15 +522,10 @@
                 
                 ui.memberStatus.textContent = memberData.status || "N/A";
                 
-                ui.qrcode.innerHTML = '';
-                new QRCode(ui.qrcode, {
-                    text: "https://portal.movidasst.com/",
-                    width: 100, // AUMENTADO A 100
-                    height: 100, // AUMENTADO A 100
-                    colorDark : "#1e293b",
-                    colorLight : "#ffffff",
-                    correctLevel : QRCode.CorrectLevel.H
-                });
+                // Generar QR dinámico con la API de qrserver y el enlace del participante
+                const qrData = memberData.codigoVerificacion ? `https://gente.movidasst.com/?id=${memberData.codigoVerificacion}` : "https://gente.movidasst.com/";
+                const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(qrData)}&color=1e293b&bgcolor=ffffff`;
+                ui.qrcode.innerHTML = `<img src="${qrSrc}" alt="QR Perfil" width="100" height="100" crossorigin="anonymous">`;
 
                 let imageUrl = 'https://placehold.co/128x128/f1f5f9/94a3b8?text=Perfil';
                 if (memberData.fotoUrl && memberData.fotoUrl.startsWith('http')) {
@@ -752,16 +582,14 @@
             const resetView = () => {
                 switchView(false);
                 setTimeout(() => {
-                    ui.dniInput.value = ''; ui.codeInput.value = ''; ui.verificationCodeInput.value = '';
+                    ui.dniInput.value = ''; ui.codeInput.value = '';
                     ui.errorMessage.textContent = ''; ui.uploadStatus.textContent = ''; ui.downloadStatus.textContent = '';
-                    ui.verificationResultMessage.innerHTML = '';
                     ui.memberPhoto.src = 'https://placehold.co/128x128/f1f5f9/94a3b8?text=Perfil';
                     currentMemberDNI = null;
                 }, 400);
             };
             
             ui.searchButton.addEventListener('click', searchMember);
-            ui.verifyButton.addEventListener('click', verifyMemberByCode);
             ui.photoInput.addEventListener('change', handlePhotoSelection);
             ui.uploadButton.addEventListener('click', uploadCroppedPhoto);
             ui.cancelCropBtn.addEventListener('click', closeCropper);
@@ -770,7 +598,6 @@
             ui.resetButton.addEventListener('click', resetView);
             ui.codeInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') searchMember(); });
             ui.dniInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') searchMember(); });
-            ui.verificationCodeInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') verifyMemberByCode(); });
         });
     </script>
 </body>
